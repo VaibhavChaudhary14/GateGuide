@@ -5,8 +5,9 @@ import sys
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-db_js_path = "c:\\Users\\Vaibhav Chaudhary\\OneDrive\\Desktop\\GATE 2027\\GATE_DA_2024_2026_PYQ_Platform\\database.js"
-report_path = "C:\\Users\\Vaibhav Chaudhary\\.gemini\\antigravity-ide\\brain\\a7cddfd4-8b36-4d1f-842a-6f76d4233290\\validation_report.md"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+db_js_path = os.path.join(script_dir, "..", "database.js")
+report_path = os.path.join(script_dir, "..", "validation_report.md")
 
 if not os.path.exists(db_js_path):
     print(f"Error: {db_js_path} does not exist.")
@@ -46,7 +47,7 @@ for q in questions:
     image_path = q["imagePath"]
     
     # Check if image file exists
-    full_image_path = os.path.join("c:\\Users\\Vaibhav Chaudhary\\OneDrive\\Desktop\\GATE 2027\\GATE_DA_2024_2026_PYQ_Platform", image_path.replace("/", "\\"))
+    full_image_path = os.path.join(script_dir, "..", image_path.replace("/", "\\"))
     image_exists = os.path.exists(full_image_path)
     
     q_errors = []

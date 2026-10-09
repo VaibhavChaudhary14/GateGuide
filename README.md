@@ -33,12 +33,23 @@ A premium, offline-first educational platform designed to search, filter, practi
 
 ---
 
+## 📋 Production Audit & Architecture Reports
+
+- [AUDIT.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/AUDIT.md) — Complete codebase inventory, dependency trace, and data risk assessment.
+- [ARCHITECTURE.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/ARCHITECTURE.md) — Multi-tier architecture, `countries.dev` design system tokens, and data flow.
+- [MIGRATION_MAP.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/MIGRATION_MAP.md) — Route hierarchy and file consolidation mapping.
+- [FEATURE_PARITY.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/FEATURE_PARITY.md) — Checklist of feature parity, PYQ metrics, and verification status.
+- [TEST_REPORT.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/TEST_REPORT.md) — Verification report for Python database validator & Node.js 100-user Redis benchmark.
+- [system_design_and_cache.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/system_design_and_cache.md) — System design & Redis cache memory capacity calculations.
+
+---
+
 ## 🚀 Quick Start
 
-1.  Clone or download the project folder.
-2.  Locate [index.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/index.html) in the root directory.
-3.  Double-click [index.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/index.html) to open the platform in any modern web browser.
-4.  *Note:* No internet connection, server configurations, or installation commands (`npm install`) are required to run the portal.
+1. Clone or download the project folder.
+2. Double-click [index.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/index.html) to launch the SaaS Landing Page.
+3. Click **"Explore PYQs"** to open the [pyqs.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/pyqs.html) workspace.
+4. *Note:* No internet connection, server configurations, or installation commands (`npm install`) are required to run the portal.
 
 ---
 
