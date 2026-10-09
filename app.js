@@ -215,9 +215,10 @@ function renderToolbar() {
     if (!toolbar) return;
     
     toolbar.innerHTML = `
-        <div class="search-box">
-            <i class="search-icon">🔍</i>
-            <input type="text" id="search-input" placeholder="Search by text, Q number, topic, subject..." value="${searchQuery}" oninput="handleSearch(this.value)">
+        <div class="countries-search-bar" style="max-width: 480px;">
+            <span style="color: var(--text-muted); font-size: 14px;">🔍</span>
+            <input type="text" id="search-input" placeholder="Search questions, topics, subjects..." value="${searchQuery}" oninput="handleSearch(this.value)">
+            <kbd>⌘K</kbd>
         </div>
         <div class="filters">
             <select id="year-filter" onchange="handleYearFilter(this.value)">

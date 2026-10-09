@@ -5,34 +5,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --bg-main: #080d16;
-    --bg-sidebar: #0d1527;
-    --card-bg: rgba(21, 32, 54, 0.6);
+    /* countries.dev Design System Tokens */
+    --bg-main: #0a0a0c;
+    --bg-sidebar: #0e121b;
+    --card-bg: rgba(18, 24, 38, 0.7);
     --card-border: rgba(255, 255, 255, 0.08);
+    --card-border-hover: rgba(56, 189, 248, 0.35);
     
-    --text-primary: #f0f4f9;
+    --text-primary: #ffffff;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     
+    --accent-blue: #2563eb;
+    --accent-blue-light: #38bdf8;
+    --accent-indigo: #6366f1;
     --accent-gold: #d9a441;
-    --accent-gold-hover: #b9822a;
-    --accent-indigo: #5b5bd6;
-    --accent-indigo-hover: #4545b8;
     --accent-teal: #4a9a8f;
     
-    --feedback-correct-bg: rgba(74, 154, 143, 0.15);
-    --feedback-correct-border: rgba(74, 154, 143, 0.4);
+    --feedback-correct-bg: rgba(74, 154, 143, 0.12);
+    --feedback-correct-border: rgba(74, 154, 143, 0.35);
     --feedback-correct-text: #59c2a0;
     
-    --feedback-incorrect-bg: rgba(224, 83, 83, 0.15);
-    --feedback-incorrect-border: rgba(224, 83, 83, 0.4);
+    --feedback-incorrect-bg: rgba(224, 83, 83, 0.12);
+    --feedback-incorrect-border: rgba(224, 83, 83, 0.35);
     --feedback-incorrect-text: #f06a6a;
     
-    --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.75);
     
-    --transition-fast: 0.15s ease;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Fira Code', 'Geist Mono', monospace;
+    
+    --radius-full: 9999px;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+    
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -50,6 +60,118 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+}
+
+/* =========================================================================
+   COUNTRIES.DEV DESIGN SYSTEM UTILITIES & COMPONENT SPECIFICATIONS
+   ========================================================================= */
+
+kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: 1px solid transparent;
+}
+
+.btn-pill-primary {
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+}
+
+.btn-pill-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+}
+
+.btn-pill-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border-color: var(--card-border);
+}
+
+.btn-pill-secondary:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: var(--card-border-hover);
+    color: #ffffff;
+}
+
+/* Grid Container with countries.dev crisp 1px borders */
+.grid-border-container {
+    display: grid;
+    border-top: 1px solid var(--card-border);
+    border-left: 1px solid var(--card-border);
+}
+
+.grid-border-container > * {
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    transition: background var(--transition-fast);
+}
+
+.grid-border-container > *:hover {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+/* Search Bar with KBD Shortcut Pill */
+.countries-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 560px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-full);
+    padding: 6px 16px 6px 18px;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.countries-search-bar:focus-within {
+    border-color: var(--accent-blue-light);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.countries-search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    padding: 6px 10px;
+    font-family: var(--font-sans);
+}
+
+.countries-search-bar input::placeholder {
+    color: var(--text-muted);
 }
 
 /* Header */
