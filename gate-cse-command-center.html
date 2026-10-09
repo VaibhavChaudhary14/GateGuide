@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GATE CSE 2027 — Adaptive Personal Study Command Center</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #070b14;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(56, 189, 248, 0.4);
+            
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --secondary: #a855f7;
+            --secondary-hover: #9333ea;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --accent-indigo: #6366f1;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            
+            --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Header Navigation Bar */
+        header {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .header-title h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-cyan { background: rgba(56, 189, 248, 0.12); color: var(--primary); border-color: rgba(56, 189, 248, 0.3); }
+        .badge-purple { background: rgba(168, 85, 247, 0.12); color: var(--secondary); border-color: rgba(168, 85, 247, 0.3); }
+        .badge-green { background: rgba(34, 197, 94, 0.12); color: var(--accent-green); border-color: rgba(34, 197, 94, 0.3); }
+        .badge-amber { background: rgba(245, 158, 11, 0.12); color: var(--accent-amber); border-color: rgba(245, 158, 11, 0.3); }
+
+        /* KPI Dashboard Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 20px;
+            transition: var(--transition-fast);
+        }
+
+        .kpi-card:hover {
+            border-color: var(--border-active);
+            transform: translateY(-2px);
+        }
+
+        .kpi-card .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .kpi-card .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .kpi-card .sub {
+            font-size: 0.78rem;
+            color: var(--accent-green);
+            margin-top: 2px;
+        }
+
+        /* Mode Toggles Bar */
+        .mode-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .toggle-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .toggle-btn.active-low-energy { background: rgba(245, 158, 11, 0.2); color: var(--accent-amber); border-color: var(--accent-amber); }
+        .toggle-btn.active-backlog { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); border-color: var(--accent-rose); }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 16px;
+            border-radius: 10px 10px 0 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* Tab Content Panels */
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* Layout Grids */
+        .grid-2 { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-full { width: 100%; }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* Cards & Panels */
+        .panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header .subtext {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Form Controls */
+        label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        select, input[type="text"], input[type="number"], textarea {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 10px 14px;
+            font-size: 0.88rem;
+            width: 100%;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary);
+            color: #080d1a;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-purple {
+            background: var(--secondary);
+            color: #fff;
+        }
+
+        .btn-purple:hover {
+            background: var(--secondary-hover);
+        }
+
+        .btn-danger {
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--accent-rose);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+        }
+
+        .btn-danger:hover {
+            background: rgba(244, 63, 94, 0.35);
+        }
+
+        /* Auto-Pair Cards */
+        .pair-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .pair-card.recommended {
+            border-color: var(--primary);
+            background: linear-gradient(145deg, rgba(56, 189, 248, 0.08), rgba(15, 23, 42, 0.6));
+        }
+
+        .pair-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pair-card-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #fff;
+        }
+
+        .pair-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pair-metrics .metric-val {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--primary);
+        }
+
+        .pair-metrics .metric-lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* Tonight's Action Generator Callout & Tasks */
+        .tonight-callout {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(56, 189, 248, 0.15));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: 14px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tonight-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tonight-tasks-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tonight-task-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: var(--transition-fast);
+        }
+
+        .tonight-task-card.checked {
+            opacity: 0.5;
+            text-decoration: line-through;
+            border-color: rgba(34, 197, 94, 0.4);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+        }
+
+        .progress-bar-bg {
+            background: rgba(30, 41, 59, 0.8);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+            transition: width 0.4s ease;
+        }
+
+        /* Weekly Planner Cards */
+        .day-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .task-item {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        /* Mastery Sliders */
+        .mastery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        .mastery-item {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mastery-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Pair Matrix Table */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+            text-align: center;
+        }
+
+        .matrix-table th, .matrix-table td {
+            padding: 8px 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .matrix-table th {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .matrix-cell {
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-weight: 700;
+            border-radius: 4px;
+        }
+
+        .matrix-cell:hover {
+            transform: scale(1.15);
+            outline: 2px solid var(--primary);
+            z-index: 10;
+        }
+
+        /* Dependency Graph Visualization */
+        .dep-graph {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .dep-track {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .dep-track-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .dep-nodes {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dep-node {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dep-arrow {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Radar Bars */
+        .radar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .radar-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+        }
+
+        .radar-bar-bg {
+            background: rgba(30, 41, 59, 0.8);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .radar-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Tables */
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        table.data-table th, table.data-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table.data-table th {
+            color: var(--text-muted);
+            font-weight: 700;
+            background: rgba(30, 41, 59, 0.4);
+        }
+
+        /* Print Styling */
+        @media print {
+            body { background: #fff; color: #000; }
+            header, .mode-bar, .nav-tabs, .btn { display: none !important; }
+            .tab-content { display: block !important; }
+            .panel { border: 1px solid #ccc; background: #fff; color: #000; box-shadow: none; margin-bottom: 20px; }
+            .value, .pair-card-title { color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>GATE CSE 2027 Command Center</h1>
+            <p>Adaptive Coaching-Aware Planner &amp; Tonight Decision Engine</p>
+        </div>
+        <div class="header-actions">
+            <span class="badge badge-purple">Target: AIR &lt; 500</span>
+            <span class="badge badge-cyan" id="projected-score-badge">Estimated Mastery: 15.0 / 100</span>
+            <button class="btn btn-secondary" onclick="exportData()">💾 Export JSON</button>
+            <button class="btn btn-secondary" onclick="importDataPrompt()">📂 Import JSON</button>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Plan</button>
+        </div>
+    </header>
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="label">Simulated Day</div>
+            <div class="value" id="kpi-sim-day">Day 0</div>
+            <div class="sub" id="kpi-total-hours">Total Study: 0.0 hrs</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Projected Rank</div>
+            <div class="value" id="kpi-projected-rank" style="font-size: 1.25rem; color: var(--primary);">Unranked</div>
+            <div class="sub" style="color: var(--text-muted);">Based on GATE 15-Yr Weights</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Active Coaching Subject</div>
+            <div class="value" id="kpi-coaching-subj" style="font-size: 1.2rem; color: var(--secondary);">PDS</div>
+            <div class="sub" id="kpi-upcoming-subj">Next: Digital Logic</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Active Companion Pair</div>
+            <div class="value" id="kpi-active-pair" style="font-size: 1.15rem; color: var(--accent-green);">PDS + Digital Logic</div>
+            <div class="sub" id="kpi-pair-score">Pair Synergy: 90 / 100</div>
+        </div>
+    </div>
+
+    <!-- Mode Controls -->
+    <div class="mode-bar">
+        <div class="toggle-group">
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">Special Modes:</span>
+            <button class="toggle-btn" id="btn-low-energy" onclick="toggleLowEnergyMode()">
+                ⚡ Low Energy Day Mode
+            </button>
+            <button class="toggle-btn" id="btn-backlog" onclick="toggleBacklogMode()">
+                🚨 Backlog Recovery Mode
+            </button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">
+            Coaching vs Self-Study Balance: <strong id="balance-ratio" style="color: var(--primary);">1 : 1.5 (Optimal)</strong>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-autopair')">⚡ Auto-Pair Engine</button>
+        <button class="tab-btn" onclick="switchTab('tab-weekly')">🌙 Tonight's Decision Engine &amp; Weekly</button>
+        <button class="tab-btn" onclick="switchTab('tab-mastery')">🗺️ Mastery &amp; Roadmap</button>
+        <button class="tab-btn" onclick="switchTab('tab-matrix')">📐 Pair-Score Matrix</button>
+        <button class="tab-btn" onclick="switchTab('tab-dep')">🔗 Dependency Graph</button>
+        <button class="tab-btn" onclick="switchTab('tab-spaced')">🧠 Spaced Revision</button>
+        <button class="tab-btn" onclick="switchTab('tab-errors')">📕 Error Log System</button>
+        <button class="tab-btn" onclick="switchTab('tab-coaching')">📝 Coaching Logger</button>
+        <button class="tab-btn" onclick="switchTab('tab-radar')">📊 PYQ Topic Radar</button>
+    </nav>
+
+    <!-- TAB 1: Auto-Pair Engine -->
+    <div id="tab-autopair" class="tab-content active">
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>⚡ Adaptive Auto-Pair Recommendation Engine</h2>
+                    <span class="subtext">Synergy &amp; Workload Optimizer</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div>
+                        <label>Current Coaching Subject</label>
+                        <select id="select-coaching-subj" onchange="updateCoachingSubject(this.value)">
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label>Upcoming Coaching Subject</label>
+                        <select id="select-upcoming-subj" onchange="updateUpcomingSubject(this.value)">
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Pairing Strategy Mode</label>
+                    <select id="select-pair-strategy" onchange="recalculatePairings()">
+                        <option value="coach-first">Coach-First (Optimizes around current coaching subject)</option>
+                        <option value="best-global">Best Global Synergy (Maximum Synergy Matrix Score)</option>
+                        <option value="weakness-first">Weakness-First (Pairs lowest mastery subject with high-synergy companion)</option>
+                        <option value="roi-first">ROI-First (Focuses on highest PYQ &amp; weightage subjects)</option>
+                    </select>
+                </div>
+
+                <div class="panel-header" style="margin-top: 10px;">
+                    <h2>Top 3 Companion Pair Recommendations</h2>
+                </div>
+
+                <div id="pair-recommendations-container" style="display: flex; flex-direction: column; gap: 14px;">
+                    <!-- Dynamically rendered -->
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>🧠 Pair Synergy Rationale</h2>
+                </div>
+                <div id="pair-rationale-box" style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                    Select a coaching subject to view mathematical synergy, cognitive load balance, and PYQ overlap.
+                </div>
+                <div class="panel-header" style="margin-top: 10px;">
+                    <h2>💡 Daily 330-Min (5.5h) Self-Study Architecture</h2>
+                </div>
+                <div class="routine-blocks" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+                    <div class="block-chip">
+                        <div class="time" style="font-size:0.75rem; color:var(--secondary); font-weight:700;">45 Mins</div>
+                        <div class="desc" style="font-size:0.82rem; font-weight:600; color:#fff;">Primary Concepts</div>
+                    </div>
+                    <div class="block-chip">
+                        <div class="time" style="font-size:0.75rem; color:var(--secondary); font-weight:700;">120 Mins</div>
+                        <div class="desc" style="font-size:0.82rem; font-weight:600; color:#fff;">Workbook Solving</div>
+                    </div>
+                    <div class="block-chip">
+                        <div class="time" style="font-size:0.75rem; color:var(--secondary); font-weight:700;">105 Mins</div>
+                        <div class="desc" style="font-size:0.82rem; font-weight:600; color:#fff;">Secondary Pair Revision</div>
+                    </div>
+                    <div class="block-chip">
+                        <div class="time" style="font-size:0.75rem; color:var(--secondary); font-weight:700;">45 Mins</div>
+                        <div class="desc" style="font-size:0.82rem; font-weight:600; color:#fff;">Pure PYQ Drills</div>
+                    </div>
+                    <div class="block-chip">
+                        <div class="time" style="font-size:0.75rem; color:var(--secondary); font-weight:700;">15 Mins</div>
+                        <div class="desc" style="font-size:0.82rem; font-weight:600; color:#fff;">Error Log &amp; Drill</div>
+                    </div>
+                    <div class="block-chip" style="border-color: var(--secondary);">
+                        <div class="time" style="font-size:0.75rem; color:var(--secondary); font-weight:700;">+30 Mins</div>
+                        <div class="desc" style="font-size:0.82rem; font-weight:600; color:#fff;">Daily General Aptitude</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: Weekly Execution & Tonight's Decision Engine -->
+    <div id="tab-weekly" class="tab-content">
+        <div class="tonight-callout">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h2 style="font-size: 1.3rem; font-weight: 800; color: #fff;">🌙 "What Should I Study Tonight?" Decision Engine</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Dynamically constructs tonight's task blocks with topic intelligence &amp; workload weighting.</p>
+                </div>
+                <button class="btn btn-purple" onclick="generateTonightPlan()">✨ Generate Tonight's Plan</button>
+            </div>
+
+            <!-- Tonight Decision Controls -->
+            <div class="tonight-controls" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                <div>
+                    <label>📌 Select Primary Subject</label>
+                    <select id="tonight-primary-subj" onchange="generateTonightPlan()">
+                        <option value="auto">🤖 Auto (From Focus Mode / Coaching)</option>
+                        <!-- Populated via JS -->
+                    </select>
+                </div>
+                <div>
+                    <label>Primary Focus Mode</label>
+                    <select id="tonight-focus-mode" onchange="generateTonightPlan()">
+                        <option value="auto">🤖 Auto Focus (Engine decides optimum focus)</option>
+                        <option value="coaching">🎓 Coaching Subject Focus (Revolves around active coaching topic)</option>
+                        <option value="weakest">🧱 Weakest Subject Focus (Attacks lowest mastery subject)</option>
+                        <option value="pair">🔗 Current Pair Focus (Uses current optimized pair)</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Time Budget Tonight</label>
+                    <select id="tonight-budget-mode" onchange="generateTonightPlan()">
+                        <option value="330">5.5 Hours (Full Standard Architecture)</option>
+                        <option value="240">4.0 Hours (Focused Evening)</option>
+                        <option value="180">3.0 Hours (Compact Session)</option>
+                        <option value="120">2.0 Hours (Light Recovery Session)</option>
+                        <option value="90">90 Mins (Low Energy Sprint)</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Subject Profile</label>
+                    <select id="tonight-profile-mode" onchange="generateTonightPlan()">
+                        <option value="already-taught">Coaching Taught Subject (20% Concept / 50% Solving / 20% Companion / 10% PYQ)</option>
+                        <option value="genuinely-weak">Genuinely Weak Subject (40% Concept / 35% Solving / 20% Companion / 5% Error)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tonight Execution Tracker -->
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 0.9rem;">Tonight's Completion Progress: <strong id="tonight-pct-text" style="color: var(--primary);">0%</strong></span>
+                    <button class="btn btn-secondary" onclick="markTonightCompleted()" style="font-size: 0.8rem;">✓ Mark Session Completed</button>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="tonight-progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Task Blocks Output Container -->
+            <div id="tonight-tasks-container" class="tonight-tasks-grid">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🗓️ Weekly Execution Grid</h2>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-secondary" onclick="simulateWeeklyDays(1)">+1 Study Day</button>
+                    <button class="btn btn-secondary" onclick="simulateWeeklyDays(7)">+1 Week (7 Days)</button>
+                    <button class="btn btn-danger" onclick="resetSim()">Reset Progress</button>
+                </div>
+            </div>
+            <div class="grid-3" id="weekly-days-container">
+                <!-- Days Mon - Sun populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: Mastery & Roadmap -->
+    <div id="tab-mastery" class="tab-content">
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>🗺️ Editable Study Roadmap Phases</h2>
+                    <button class="btn btn-secondary" onclick="openAddPhaseModal()">➕ Add Custom Phase</button>
+                </div>
+                <div id="phases-roadmap-container" style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>🎛️ Subject Mastery Sliders (0 - 100%)</h2>
+                </div>
+                <div class="mastery-grid" id="mastery-sliders-container">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: Pair-Score Matrix -->
+    <div id="tab-matrix" class="tab-content">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📐 Interactive 12x12 Pair-Synergy Matrix</h2>
+                <span class="subtext">Click any matrix cell to force that pair as your active study pair</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="matrix-table" id="matrix-table-el">
+                    <!-- Rendered dynamically -->
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 5: Dependency Graph -->
+    <div id="tab-dep" class="tab-content">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🔗 Academic Dependency Chains &amp; Prerequisite Graph</h2>
+                <span class="subtext">Identified prerequisite relations from GATE CSE 15-Year Analysis</span>
+            </div>
+            <div class="dep-graph">
+                <div class="dep-track">
+                    <div class="dep-track-title">System &amp; Hardware Track</div>
+                    <div class="dep-nodes">
+                        <div class="dep-node" id="dep-DL">Digital Logic</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-COA">COA</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-OS">Operating Systems</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-CN">Computer Networks</div>
+                    </div>
+                </div>
+
+                <div class="dep-track">
+                    <div class="dep-track-title">Software &amp; Data Track</div>
+                    <div class="dep-nodes">
+                        <div class="dep-node" id="dep-PDS">PDS</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-Algo">Algorithms</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-DBMS">DBMS</div>
+                    </div>
+                </div>
+
+                <div class="dep-track">
+                    <div class="dep-track-title">Theoretical Foundations Track</div>
+                    <div class="dep-nodes">
+                        <div class="dep-node" id="dep-Discrete">Discrete Mathematics</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-TOC">TOC</div>
+                        <div class="dep-arrow">➔</div>
+                        <div class="dep-node" id="dep-Compiler">Compiler Design</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 6: Spaced Revision -->
+    <div id="tab-spaced" class="tab-content">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🧠 Spaced-Revision Queue (1, 3, 7, 14, 30-Day Intervals)</h2>
+                <button class="btn btn-purple" onclick="addSpacedRevisionPrompt()">➕ Add Concept for Revision</button>
+            </div>
+            <div class="grid-3" id="spaced-revision-container">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 7: Error Log System -->
+    <div id="tab-errors" class="tab-content">
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📕 Log New Error / Mistake</h2>
+                </div>
+                <form id="error-log-form" onsubmit="handleLogError(event)" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div>
+                        <label>Question Reference / Topic</label>
+                        <input type="text" id="err-topic" placeholder="e.g. Q45 Bayes Theorem / Cache Tag Calculation" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label>Subject</label>
+                            <select id="err-subject"></select>
+                        </div>
+                        <div>
+                            <label>Mistake Category</label>
+                            <select id="err-category">
+                                <option value="Conceptual">Conceptual Gap</option>
+                                <option value="Calculation">Calculation Error</option>
+                                <option value="NAT Precision">NAT Precision Trap</option>
+                                <option value="Misread Question">Misread Question</option>
+                                <option value="Formula Recall">Formula Memory Failure</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Correction &amp; Key Insight</label>
+                        <textarea id="err-notes" rows="3" placeholder="What to remember next time..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-purple">📌 Save Error Log Entry</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📋 Recorded Mistake History</h2>
+                </div>
+                <div style="overflow-y: auto; max-height: 400px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ref / Topic</th>
+                                <th>Category</th>
+                                <th>Correction</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="error-log-tbody">
+                            <!-- Rendered dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 8: Coaching Timetable Logger -->
+    <div id="tab-coaching" class="tab-content">
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📝 Daily Coaching Timetable Input</h2>
+                </div>
+                <form onsubmit="handleLogCoaching(event)" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div>
+                        <label>Coaching Subject</label>
+                        <select id="coach-input-subject"></select>
+                    </div>
+                    <div>
+                        <label>Topic Taught Today</label>
+                        <input type="text" id="coach-input-topic" placeholder="e.g. CN: TCP, UDP, Flow Control & Sliding Window" required>
+                    </div>
+                    <div>
+                        <label>Lecture Duration (Hours)</label>
+                        <input type="number" step="0.5" id="coach-input-hours" value="2.5" required>
+                    </div>
+                    <button type="submit" class="btn btn-purple">⚡ Generate Auto Plan from Today's Coaching</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📜 Recent Coaching Log &amp; Converted Tasks</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Topic Taught</th>
+                            <th>Hours</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coaching-log-tbody">
+                        <!-- Rendered dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 9: PYQ Topic Radar -->
+    <div id="tab-radar" class="tab-content">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📊 Top PYQ Recurrence Radar &amp; High-Frequency Topic Analysis</h2>
+                <span class="subtext">Directly mapped from 15-Year GATE CSE Analysis</span>
+            </div>
+            <div class="radar-list" id="radar-list-container">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // -------------------------------------------------------------
+    // DATA STRUCTURES & TOPIC INTELLIGENCE MAPPING
+    // -------------------------------------------------------------
+    const SUBJECTS = [
+        { id: "PDS", name: "PDS (Programming & Data Structures)", weight: 10.5, difficulty: "Medium" },
+        { id: "Digital Logic", name: "Digital Logic", weight: 5.0, difficulty: "Easy" },
+        { id: "Algorithms", name: "Algorithms", weight: 8.5, difficulty: "Hard" },
+        { id: "DBMS", name: "DBMS", weight: 7.5, difficulty: "Medium" },
+        { id: "TOC", name: "TOC (Theory of Computation)", weight: 8.0, difficulty: "Medium" },
+        { id: "Compiler Design", name: "Compiler Design", weight: 5.0, difficulty: "Medium" },
+        { id: "COA", name: "COA (Computer Organization)", weight: 8.5, difficulty: "Hard" },
+        { id: "Operating Systems", name: "Operating Systems", weight: 9.0, difficulty: "Medium" },
+        { id: "Computer Networks", name: "Computer Networks", weight: 9.5, difficulty: "Hard" },
+        { id: "Engineering Mathematics", name: "Engineering Mathematics", weight: 12.0, difficulty: "Medium" },
+        { id: "Discrete Mathematics", name: "Discrete Mathematics", weight: 6.5, difficulty: "Hard" },
+        { id: "General Aptitude", name: "General Aptitude", weight: 15.0, difficulty: "Easy" }
+    ];
+
+    const TOPIC_INTELLIGENCE = {
+        "PDS": ["Pointers & Recursion (109 PYQs)", "Binary Search Trees & Traversal", "Arrays, Stacks & Queues Math"],
+        "Digital Logic": ["Combinational Circuits (K-Maps)", "Sequential Circuits & Flip-Flops", "Number Systems & Codes"],
+        "Algorithms": ["Graph Algorithms (Dijkstra/MST 86 PYQs)", "Dynamic Programming & Greedy", "Recurrences & Asymptotic Bounds"],
+        "DBMS": ["SQL Queries & Joins (115 PYQs)", "Functional Dependency & Normalization", "B / B+ Trees Indexing (68 PYQs)"],
+        "TOC": ["Regular Languages & DFA/NFA", "Context-Free Grammars & Pushdown Automata", "Turing Machines & Decidability"],
+        "Compiler Design": ["Lexical Analysis & Parsing (176 PYQs)", "Intermediate Code Generation", "Liveness & Code Optimization"],
+        "COA": ["Cache Memory & Mapping Math (72 PYQs)", "Pipelining & Hazard Resolution", "Instruction Formats & Addressing"],
+        "Operating Systems": ["Deadlocks & Semaphores (53 PYQs)", "CPU Scheduling & Process Sync", "Virtual Memory & Paging Math"],
+        "Computer Networks": ["OSI & TCP/IP Header Protocols (111 PYQs)", "IP Addressing & Subnetting", "Flow Control & Sliding Window"],
+        "Engineering Mathematics": ["Graph Theory (115 PYQs)", "Linear Algebra & Eigenvalues Math", "Bayes Theorem & Probability"],
+        "Discrete Mathematics": ["Propositional & First-Order Logic", "Set Theory, Relations & Lattices", "Combinatorics & Generating Functions"],
+        "General Aptitude": ["Numerical Reasoning & Series", "Spatial Reasoning & Diagrams", "Verbal Ability & Grammar"]
+    };
+
+    const PAIR_MATRIX = {
+        "PDS": { "Digital Logic": 90, "Algorithms": 92, "DBMS": 88, "TOC": 75, "COA": 82, "Operating Systems": 80, "Computer Networks": 78, "Engineering Mathematics": 85 },
+        "Digital Logic": { "COA": 90, "PDS": 90, "Operating Systems": 84, "Computer Networks": 75, "DBMS": 70 },
+        "Algorithms": { "PDS": 92, "DBMS": 88, "TOC": 85, "Discrete Mathematics": 89, "Engineering Mathematics": 87 },
+        "DBMS": { "Algorithms": 88, "PDS": 88, "Operating Systems": 85, "Computer Networks": 85 },
+        "TOC": { "Compiler Design": 95, "Algorithms": 85, "Discrete Mathematics": 92 },
+        "Compiler Design": { "TOC": 95, "PDS": 80, "Operating Systems": 78 },
+        "COA": { "Digital Logic": 90, "Operating Systems": 86, "Computer Networks": 82 },
+        "Operating Systems": { "COA": 86, "Computer Networks": 85, "DBMS": 85 },
+        "Computer Networks": { "Operating Systems": 85, "DBMS": 85, "Engineering Mathematics": 84 },
+        "Engineering Mathematics": { "Computer Networks": 84, "Algorithms": 87, "Discrete Mathematics": 90 },
+        "Discrete Mathematics": { "TOC": 92, "Algorithms": 89, "Engineering Mathematics": 90 }
+    };
+
+    const PYQ_RADAR_TOPICS = [
+        { topic: "Graph Theory", subject: "Engineering Mathematics", count: 115 },
+        { topic: "SQL Queries & Normalization", subject: "DBMS", count: 115 },
+        { topic: "OSI & TCP/IP Header Protocols", subject: "Computer Networks", count: 111 },
+        { topic: "Pointers, Recursion & Arrays", subject: "PDS", count: 109 },
+        { topic: "Lexical Analysis & Parsing", subject: "Compiler Design", count: 176 },
+        { topic: "Graph Algorithms (Dijkstra/MST)", subject: "Algorithms", count: 86 },
+        { topic: "Cache Memory & Mapping", subject: "COA", count: 72 },
+        { topic: "B / B+ Trees Indexing", subject: "DBMS", count: 68 },
+        { topic: "Deadlocks & Semaphores", subject: "Operating Systems", count: 53 }
+    ];
+
+    let state = {
+        simCurrentDay: 0,
+        simTotalHours: 0,
+        coachingSubject: "PDS",
+        upcomingSubject: "Digital Logic",
+        activePair: { s1: "PDS", s2: "Digital Logic" },
+        strategyMode: "coach-first",
+        lowEnergyMode: false,
+        backlogMode: false,
+        tonightCheckedTasks: {},
+        mastery: {
+            "PDS": 40, "Digital Logic": 30, "Algorithms": 20, "DBMS": 25,
+            "TOC": 10, "Compiler Design": 10, "COA": 15, "Operating Systems": 20,
+            "Computer Networks": 15, "Engineering Mathematics": 35, "Discrete Mathematics": 20, "General Aptitude": 60
+        },
+        phases: [
+            { id: 1, name: "Phase 1: PDS + Digital Logic", targetHours: 215, completedHours: 0, s1: "PDS", s2: "Digital Logic" },
+            { id: 2, name: "Phase 2: Algorithms + DBMS", targetHours: 240, completedHours: 0, s1: "Algorithms", s2: "DBMS" },
+            { id: 3, name: "Phase 3: TOC + Compiler Design", targetHours: 190, completedHours: 0, s1: "TOC", s2: "Compiler Design" },
+            { id: 4, name: "Phase 4: COA + Operating Systems", targetHours: 240, completedHours: 0, s1: "COA", s2: "Operating Systems" },
+            { id: 5, name: "Phase 5: CN + Engg Mathematics", targetHours: 220, completedHours: 0, s1: "Computer Networks", s2: "Engineering Mathematics" }
+        ],
+        spacedRevisions: [
+            { id: 1, concept: "B+ Tree Order & Split Rule", interval: "3-Day", dueDay: 2, status: "Due" },
+            { id: 2, concept: "Cache Tag-Index-Offset Math", interval: "7-Day", dueDay: 5, status: "Pending" }
+        ],
+        errorLogs: [
+            { id: 1, topic: "Q58 Bayes Theorem", subject: "Engineering Mathematics", category: "Conceptual", notes: "Forgot to normalize posterior probabilities correctly.", status: "Pending" }
+        ],
+        coachingLogs: [
+            { id: 1, subject: "PDS", topic: "Binary Search Trees & Traversal", hours: 2.5, date: "Today" }
+        ]
+    };
+
+    // -------------------------------------------------------------
+    // INITIALIZATION & LOCALSTORAGE
+    // -------------------------------------------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+        loadState();
+        initSelects();
+        renderAll();
+    });
+
+    function saveState() {
+        try {
+            localStorage.setItem("GATE_CSE_COMMAND_CENTER_STATE", JSON.stringify(state));
+        } catch(e) {}
+    }
+
+    function loadState() {
+        try {
+            const saved = localStorage.getItem("GATE_CSE_COMMAND_CENTER_STATE");
+            if (saved) state = JSON.parse(saved);
+        } catch(e) {}
+    }
+
+    function initSelects() {
+        const coachSel = document.getElementById("select-coaching-subj");
+        const upSel = document.getElementById("select-upcoming-subj");
+        const errSubj = document.getElementById("err-subject");
+        const coachInSubj = document.getElementById("coach-input-subject");
+        const tonightPrimarySel = document.getElementById("tonight-primary-subj");
+
+        [coachSel, upSel, errSubj, coachInSubj].forEach(sel => {
+            if (!sel) return;
+            sel.innerHTML = "";
+            SUBJECTS.forEach(s => {
+                const opt = document.createElement("option");
+                opt.value = s.id;
+                opt.textContent = s.name;
+                sel.appendChild(opt);
+            });
+        });
+
+        if (tonightPrimarySel) {
+            tonightPrimarySel.innerHTML = '<option value="auto">🤖 Auto (From Focus Mode / Coaching)</option>';
+            SUBJECTS.forEach(s => {
+                const opt = document.createElement("option");
+                opt.value = s.id;
+                opt.textContent = `📌 ${s.name}`;
+                tonightPrimarySel.appendChild(opt);
+            });
+        }
+
+        if (coachSel) coachSel.value = state.coachingSubject;
+        if (upSel) upSel.value = state.upcomingSubject;
+    }
+
+    function findBestCompanionFor(primarySubj) {
+        const candidates = SUBJECTS.filter(s => s.id !== primarySubj);
+        let bestSubj = candidates[0].id;
+        let maxScore = -1;
+
+        candidates.forEach(s => {
+            const syn = getPairSynergyScore(primarySubj, s.id);
+            const m = state.mastery[s.id] || 0;
+            const diffBonus = s.difficulty === "Easy" ? 10 : (s.difficulty === "Medium" ? 5 : 0);
+            const score = s.weight * 3 + syn + diffBonus - (m * 0.2);
+            if (score > maxScore) {
+                maxScore = score;
+                bestSubj = s.id;
+            }
+        });
+
+        return { companion: bestSubj, synergy: getPairSynergyScore(primarySubj, bestSubj) };
+    }
+
+    // -------------------------------------------------------------
+    // RENDER CONTROLLER
+    // -------------------------------------------------------------
+    function renderAll() {
+        renderKPIs();
+        renderAutoPairRecommendations();
+        generateTonightPlan();
+        renderWeeklyGrid();
+        renderRoadmap();
+        renderMasterySliders();
+        renderMatrix();
+        renderDependencyGraph();
+        renderSpacedRevisions();
+        renderErrorLogs();
+        renderCoachingLogs();
+        renderRadar();
+        saveState();
+    }
+
+    function renderKPIs() {
+        document.getElementById("kpi-sim-day").textContent = `Day ${state.simCurrentDay}`;
+        document.getElementById("kpi-total-hours").textContent = `Total Study: ${state.simTotalHours.toFixed(1)} hrs`;
+        
+        let totalMasteryWeight = 0;
+        SUBJECTS.forEach(s => {
+            const m = state.mastery[s.id] || 0;
+            totalMasteryWeight += (m / 100) * s.weight;
+        });
+        const finalScore = Math.min(100, totalMasteryWeight).toFixed(1);
+        document.getElementById("projected-score-badge").textContent = `Estimated Mastery: ${finalScore} / 100`;
+
+        let rankText = "Unranked";
+        if (finalScore >= 75) rankText = "AIR < 100 🎯";
+        else if (finalScore >= 65) rankText = "AIR 100 - 300 🚀";
+        else if (finalScore >= 55) rankText = "AIR 300 - 700 📈";
+        else if (finalScore >= 40) rankText = "AIR 1000 - 2500";
+        else if (finalScore >= 25) rankText = "Qualified (~28-32 Cutoff)";
+
+        document.getElementById("kpi-projected-rank").textContent = rankText;
+        document.getElementById("kpi-coaching-subj").textContent = state.coachingSubject;
+        document.getElementById("kpi-upcoming-subj").textContent = `Next: ${state.upcomingSubject}`;
+        document.getElementById("kpi-active-pair").textContent = `${state.activePair.s1} + ${state.activePair.s2}`;
+
+        const score = getPairSynergyScore(state.activePair.s1, state.activePair.s2);
+        document.getElementById("kpi-pair-score").textContent = `Pair Synergy: ${score} / 100`;
+    }
+
+    function getPairSynergyScore(s1, s2) {
+        if (PAIR_MATRIX[s1] && PAIR_MATRIX[s1][s2]) return PAIR_MATRIX[s1][s2];
+        if (PAIR_MATRIX[s2] && PAIR_MATRIX[s2][s1]) return PAIR_MATRIX[s2][s1];
+        return 75;
+    }
+
+    // -------------------------------------------------------------
+    // AUTO-PAIR RECOMMENDATION ENGINE
+    // -------------------------------------------------------------
+    function updateCoachingSubject(val) {
+        state.coachingSubject = val;
+        recalculatePairings();
+    }
+
+    function updateUpcomingSubject(val) {
+        state.upcomingSubject = val;
+        recalculatePairings();
+    }
+
+    function recalculatePairings() {
+        const mode = document.getElementById("select-pair-strategy").value;
+        state.strategyMode = mode;
+        renderAutoPairRecommendations();
+        renderKPIs();
+        saveState();
+    }
+
+    function renderAutoPairRecommendations() {
+        const container = document.getElementById("pair-recommendations-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        const cSubj = state.coachingSubject;
+        const candidates = SUBJECTS.filter(s => s.id !== cSubj);
+
+        let scored = candidates.map(s => {
+            const syn = getPairSynergyScore(cSubj, s.id);
+            const m = state.mastery[s.id] || 0;
+            const diffBonus = s.difficulty === "Easy" ? 10 : (s.difficulty === "Medium" ? 5 : 0);
+            const roi = s.weight * 3 + syn + diffBonus - (m * 0.2);
+
+            return {
+                subject: s.id,
+                name: s.name,
+                synergy: syn,
+                roi: Math.round(roi),
+                mastery: m,
+                weight: s.weight
+            };
+        }).sort((a, b) => b.roi - a.roi);
+
+        const recs = [
+            { type: "Best Pair (Recommended)", data: scored[0] },
+            { type: "Safest Pair (Balanced)", data: scored[1] || scored[0] },
+            { type: "High-Rank Pair (Aggressive)", data: scored[2] || scored[0] }
+        ];
+
+        recs.forEach(r => {
+            const isSelected = state.activePair.s1 === cSubj && state.activePair.s2 === r.data.subject;
+            const div = document.createElement("div");
+            div.className = `pair-card ${r.type.includes("Recommended") ? 'recommended' : ''}`;
+            div.innerHTML = `
+                <div class="pair-card-header">
+                    <span class="pair-card-title">${cSubj} + ${r.data.subject}</span>
+                    <span class="badge ${r.type.includes("Recommended") ? 'badge-cyan' : 'badge-purple'}">${r.type}</span>
+                </div>
+                <div class="pair-metrics">
+                    <div>
+                        <div class="metric-val">${r.data.synergy} / 100</div>
+                        <div class="metric-lbl">Synergy Score</div>
+                    </div>
+                    <div>
+                        <div class="metric-val">${r.data.weight} Marks</div>
+                        <div class="metric-lbl">Secondary Weight</div>
+                    </div>
+                    <div>
+                        <div class="metric-val">${r.data.mastery}%</div>
+                        <div class="metric-lbl">Current Mastery</div>
+                    </div>
+                </div>
+                <button class="btn ${isSelected ? 'btn-secondary' : 'btn-purple'}" onclick="activatePair('${cSubj}', '${r.data.subject}')">
+                    ${isSelected ? '✓ Currently Active Pair' : '⚡ Activate This Pair'}
+                </button>
+            `;
+            container.appendChild(div);
+        });
+
+        const ratBox = document.getElementById("pair-rationale-box");
+        if (ratBox) {
+            ratBox.innerHTML = `
+                Pairing <strong>${cSubj}</strong> with <strong>${scored[0].subject}</strong> provides an optimal 
+                <strong>${scored[0].synergy}/100 synergy score</strong>. It balances lecture load from coaching with 
+                high-ROI self-study problem solving, maximizing retention without cognitive fatigue.
+            `;
+        }
+    }
+
+    function activatePair(s1, s2) {
+        state.activePair = { s1, s2 };
+        renderAll();
+    }
+
+    // -------------------------------------------------------------
+    // "WHAT SHOULD I STUDY TONIGHT?" DECISION ENGINE
+    // -------------------------------------------------------------
+    function generateTonightPlan() {
+        const container = document.getElementById("tonight-tasks-container");
+        if (!container) return;
+
+        const chosenPrimary = document.getElementById("tonight-primary-subj")?.value || "auto";
+        const focusMode = document.getElementById("tonight-focus-mode")?.value || "auto";
+        const budgetMins = parseInt(document.getElementById("tonight-budget-mode")?.value || "330");
+        const profileMode = document.getElementById("tonight-profile-mode")?.value || "already-taught";
+
+        // Determine Primary Subject
+        let primarySubj = state.coachingSubject;
+        if (chosenPrimary !== "auto") {
+            primarySubj = chosenPrimary;
+        } else {
+            if (focusMode === "weakest") {
+                let minSubj = SUBJECTS[0];
+                let minM = 100;
+                SUBJECTS.forEach(s => {
+                    const m = state.mastery[s.id] || 0;
+                    if (m < minM) { minM = m; minSubj = s; }
+                });
+                primarySubj = minSubj.id;
+            } else if (focusMode === "pair") {
+                primarySubj = state.activePair.s1;
+            }
+        }
+
+        // Auto-find companion subject for primarySubj!
+        const { companion: secondarySubj, synergy: pairSynergy } = findBestCompanionFor(primarySubj);
+
+        // Allocation Ratios (Already Taught: 20/50/20/10 vs Weak: 40/35/20/5)
+        let cRatio = 0.20, pRatio = 0.50, sRatio = 0.20, pyqRatio = 0.10;
+        if (profileMode === "genuinely-weak") {
+            cRatio = 0.40; pRatio = 0.35; sRatio = 0.20; pyqRatio = 0.05;
+        }
+
+        const conceptMins = Math.round(budgetMins * cRatio);
+        const solvingMins = Math.round(budgetMins * pRatio);
+        const secMins = Math.round(budgetMins * sRatio);
+        const pyqMins = Math.round(budgetMins * pyqRatio);
+        const errorMins = Math.max(10, budgetMins - (conceptMins + solvingMins + secMins + pyqMins));
+
+        const pTopics = TOPIC_INTELLIGENCE[primarySubj] || ["Core Concepts", "Problem Solving", "PYQ Sprint"];
+        const sTopics = TOPIC_INTELLIGENCE[secondarySubj] || ["Companion Revision"];
+
+        const tasks = [
+            { id: "t1", title: `Concept Revision: ${primarySubj}`, sub: `${pTopics[0]}`, mins: conceptMins },
+            { id: "t2", title: `Deep Workbook Solving: ${primarySubj}`, sub: `${pTopics[1] || pTopics[0]}`, mins: solvingMins },
+            { id: "t3", title: `Auto-Paired Companion Revision: ${secondarySubj}`, sub: `Selected by Synergy Matrix (${sTopics[0]})`, mins: secMins },
+            { id: "t4", title: `Pure PYQ Speed Sprint: ${primarySubj}`, sub: `Timed GATE PYQ Sets (${pTopics[2] || 'High Frequency'})`, mins: pyqMins },
+            { id: "t5", title: `Error Notebook & Formula Drill`, sub: `Mistake Analysis ➔ Rule Extraction`, mins: errorMins },
+            { id: "t6", title: `Continuous GA scoring lane`, sub: `General Aptitude Daily Drill`, mins: 30 }
+        ];
+
+        let html = `
+            <div class="pair-card recommended" style="margin-bottom: 12px; padding: 12px 16px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <div style="font-weight: 800; font-size: 0.95rem; color: #fff;">
+                        🎯 Tonight's Active Pair: <span style="color: var(--primary);">${primarySubj}</span> (Primary) + <span style="color: var(--secondary);">${secondarySubj}</span> (Auto Companion)
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                        Auto-paired based on Synergy Score (${pairSynergy}/100), workload balance, and PYQ priority.
+                    </div>
+                </div>
+                <span class="badge badge-green">Optimal Pair Active</span>
+            </div>
+        `;
+        
+        let checkedCount = 0;
+
+        tasks.forEach(task => {
+            const isChecked = state.tonightCheckedTasks[task.id] || false;
+            if (isChecked) checkedCount++;
+
+            html += `
+                <div class="tonight-task-card ${isChecked ? 'checked' : ''}">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" class="task-checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTonightTask('${task.id}')">
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.92rem; color: #fff;">${task.title}</div>
+                            <div style="font-size: 0.78rem; color: var(--text-muted);">${task.sub}</div>
+                        </div>
+                    </div>
+                    <span class="badge badge-purple">${task.mins} Mins</span>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+        // Progress percentage calculation
+        const pct = Math.round((checkedCount / tasks.length) * 100);
+        document.getElementById("tonight-pct-text").textContent = `${pct}%`;
+        document.getElementById("tonight-progress-bar").style.width = `${pct}%`;
+    }
+
+    function toggleTonightTask(taskId) {
+        state.tonightCheckedTasks[taskId] = !state.tonightCheckedTasks[taskId];
+        generateTonightPlan();
+        saveState();
+    }
+
+    function markTonightCompleted() {
+        state.simCurrentDay += 1;
+        state.simTotalHours += parseFloat(document.getElementById("tonight-budget-mode")?.value || 330) / 60;
+        state.tonightCheckedTasks = {};
+        renderAll();
+        alert("🎉 Tonight's session marked completed! Day progress updated.");
+    }
+
+    function renderWeeklyGrid() {
+        const container = document.getElementById("weekly-days-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const p = state.activePair;
+
+        days.forEach((day, idx) => {
+            const div = document.createElement("div");
+            div.className = "day-card";
+            div.innerHTML = `
+                <div class="day-header">
+                    <span>${day} (Day ${state.simCurrentDay + idx + 1})</span>
+                    <span class="badge badge-cyan">${state.lowEnergyMode ? '2.5h' : '5.5h'} Block</span>
+                </div>
+                <div class="task-list">
+                    <div class="task-item"><span>Primary: ${p.s1} Workbook Solving</span><span>2h</span></div>
+                    <div class="task-item"><span>Secondary: ${p.s2} Companion Revision</span><span>1h 45m</span></div>
+                    <div class="task-item"><span>PYQ Speed Sprint (${p.s1})</span><span>45m</span></div>
+                    <div class="task-item"><span>Error Notebook Log</span><span>15m</span></div>
+                    <div class="task-item" style="color: var(--secondary);"><span>General Aptitude Daily Lane</span><span>30m</span></div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function simulateWeeklyDays(num) {
+        state.simCurrentDay += num;
+        state.simTotalHours += num * (state.lowEnergyMode ? 2.5 : 5.5);
+        renderAll();
+    }
+
+    function resetSim() {
+        state.simCurrentDay = 0;
+        state.simTotalHours = 0;
+        state.tonightCheckedTasks = {};
+        renderAll();
+    }
+
+    // -------------------------------------------------------------
+    // ROADMAP & MASTERY SLIDERS
+    // -------------------------------------------------------------
+    function renderRoadmap() {
+        const container = document.getElementById("phases-roadmap-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        state.phases.forEach(phase => {
+            const pct = Math.min(100, Math.round((phase.completedHours / phase.targetHours) * 100));
+            const div = document.createElement("div");
+            div.className = "pair-card";
+            div.innerHTML = `
+                <div class="pair-card-header">
+                    <span class="pair-card-title">${phase.name}</span>
+                    <span class="badge badge-cyan">${phase.completedHours} / ${phase.targetHours} hrs (${pct}%)</span>
+                </div>
+                <div class="radar-bar-bg">
+                    <div class="radar-bar-fill" style="width: ${pct}%;"></div>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-secondary" onclick="editPhaseHours(${phase.id})">✏️ Edit Hours</button>
+                    <button class="btn btn-purple" onclick="activatePair('${phase.s1}', '${phase.s2}')">⚡ Focus Phase Pair</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function editPhaseHours(id) {
+        const phase = state.phases.find(p => p.id === id);
+        if (!phase) return;
+        const hours = prompt(`Enter completed hours for ${phase.name}:`, phase.completedHours);
+        if (hours !== null) {
+            phase.completedHours = parseFloat(hours) || 0;
+            renderAll();
+        }
+    }
+
+    function openAddPhaseModal() {
+        const name = prompt("Enter Custom Phase Name (e.g. Phase 6: Full PYQ & Mock Sprint):");
+        if (!name) return;
+        const hours = parseFloat(prompt("Enter Target Hours:", "150")) || 150;
+        state.phases.push({
+            id: Date.now(),
+            name,
+            targetHours: hours,
+            completedHours: 0,
+            s1: state.coachingSubject,
+            s2: state.upcomingSubject
+        });
+        renderAll();
+    }
+
+    function renderMasterySliders() {
+        const container = document.getElementById("mastery-sliders-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        SUBJECTS.forEach(s => {
+            const val = state.mastery[s.id] || 0;
+            const div = document.createElement("div");
+            div.className = "mastery-item";
+            div.innerHTML = `
+                <div class="mastery-head">
+                    <span>${s.name}</span>
+                    <span style="color: var(--primary);">${val}%</span>
+                </div>
+                <input type="range" min="0" max="100" value="${val}" oninput="updateMastery('${s.id}', this.value)">
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function updateMastery(subjId, val) {
+        state.mastery[subjId] = parseInt(val) || 0;
+        renderKPIs();
+        renderAutoPairRecommendations();
+        saveState();
+    }
+
+    // -------------------------------------------------------------
+    // PAIR MATRIX TABLE
+    // -------------------------------------------------------------
+    function renderMatrix() {
+        const table = document.getElementById("matrix-table-el");
+        if (!table) return;
+        table.innerHTML = "";
+
+        const subjectsList = SUBJECTS.map(s => s.id);
+        
+        let html = `<thead><tr><th>Subject</th>`;
+        subjectsList.forEach(s => html += `<th>${s.substring(0, 5)}</th>`);
+        html += `</tr></thead><tbody>`;
+
+        subjectsList.forEach(s1 => {
+            html += `<tr><th>${s1.substring(0, 5)}</th>`;
+            subjectsList.forEach(s2 => {
+                if (s1 === s2) {
+                    html += `<td style="background: rgba(255,255,255,0.05); color: var(--text-dim);">-</td>`;
+                } else {
+                    const score = getPairSynergyScore(s1, s2);
+                    const bg = score >= 90 ? 'rgba(34, 197, 94, 0.3)' : (score >= 80 ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.05)');
+                    html += `<td class="matrix-cell" style="background: ${bg};" onclick="activatePair('${s1}', '${s2}')" title="${s1} + ${s2}: ${score}">${score}</td>`;
+                }
+            });
+            html += `</tr>`;
+        });
+
+        html += `</tbody>`;
+        table.innerHTML = html;
+    }
+
+    // -------------------------------------------------------------
+    // DEPENDENCY GRAPH VISUALIZATION
+    // -------------------------------------------------------------
+    function renderDependencyGraph() {
+        const nodes = ["DL", "COA", "OS", "CN", "PDS", "Algo", "DBMS", "Discrete", "TOC", "Compiler"];
+        const map = {
+            "DL": "Digital Logic", "COA": "COA", "OS": "Operating Systems", "CN": "Computer Networks",
+            "PDS": "PDS", "Algo": "Algorithms", "DBMS": "DBMS", "Discrete": "Discrete Mathematics",
+            "TOC": "TOC", "Compiler": "Compiler Design"
+        };
+
+        nodes.forEach(n => {
+            const el = document.getElementById(`dep-${n}`);
+            if (!el) return;
+            const full = map[n];
+            const m = state.mastery[full] || 0;
+            if (m >= 75) {
+                el.style.borderColor = "var(--accent-green)";
+                el.style.color = "var(--accent-green)";
+            } else if (m >= 30) {
+                el.style.borderColor = "var(--primary)";
+                el.style.color = "var(--primary)";
+            } else {
+                el.style.borderColor = "var(--border-color)";
+                el.style.color = "var(--text-muted)";
+            }
+        });
+    }
+
+    // -------------------------------------------------------------
+    // SPACED REVISION QUEUE
+    // -------------------------------------------------------------
+    function renderSpacedRevisions() {
+        const container = document.getElementById("spaced-revision-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        state.spacedRevisions.forEach(rev => {
+            const div = document.createElement("div");
+            div.className = "pair-card";
+            div.innerHTML = `
+                <div class="pair-card-header">
+                    <span class="pair-card-title">${rev.concept}</span>
+                    <span class="badge badge-purple">${rev.interval}</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Status: ${rev.status}</div>
+                <button class="btn btn-secondary" onclick="markRevised(${rev.id})">✓ Mark Revised Today</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function addSpacedRevisionPrompt() {
+        const concept = prompt("Enter Concept Name for Spaced Revision:");
+        if (!concept) return;
+        state.spacedRevisions.push({
+            id: Date.now(),
+            concept,
+            interval: "3-Day",
+            dueDay: state.simCurrentDay + 3,
+            status: "Due"
+        });
+        renderAll();
+    }
+
+    function markRevised(id) {
+        state.spacedRevisions = state.spacedRevisions.filter(r => r.id !== id);
+        renderAll();
+    }
+
+    // -------------------------------------------------------------
+    // ERROR LOG SYSTEM
+    // -------------------------------------------------------------
+    function renderErrorLogs() {
+        const tbody = document.getElementById("error-log-tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        state.errorLogs.forEach(err => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><strong>${err.topic}</strong><br><small style="color:var(--text-muted);">${err.subject}</small></td>
+                <td><span class="badge badge-amber">${err.category}</span></td>
+                <td style="font-size: 0.8rem; color: #cbd5e1;">${err.notes}</td>
+                <td><button class="btn btn-secondary" onclick="deleteErrorLog(${err.id})">✓ Resolve</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function handleLogError(e) {
+        e.preventDefault();
+        const topic = document.getElementById("err-topic").value;
+        const subject = document.getElementById("err-subject").value;
+        const category = document.getElementById("err-category").value;
+        const notes = document.getElementById("err-notes").value;
+
+        state.errorLogs.push({ id: Date.now(), topic, subject, category, notes, status: "Pending" });
+        e.target.reset();
+        renderAll();
+    }
+
+    function deleteErrorLog(id) {
+        state.errorLogs = state.errorLogs.filter(e => e.id !== id);
+        renderAll();
+    }
+
+    // -------------------------------------------------------------
+    // COACHING TIMETABLE LOGGER & AUTO PLAN CONVERTER
+    // -------------------------------------------------------------
+    function renderCoachingLogs() {
+        const tbody = document.getElementById("coaching-log-tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        state.coachingLogs.forEach(log => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><strong>${log.subject}</strong></td>
+                <td>${log.topic}</td>
+                <td>${log.hours} hrs</td>
+                <td>
+                    <button class="btn btn-purple" style="font-size:0.75rem; padding:4px 8px;" onclick="convertCoachingToPlan('${log.subject}', '${log.topic.replace(/'/g, "\\'")}')">
+                        ⚡ Build Tonight's Plan
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function handleLogCoaching(e) {
+        e.preventDefault();
+        const subject = document.getElementById("coach-input-subject").value;
+        const topic = document.getElementById("coach-input-topic").value;
+        const hours = parseFloat(document.getElementById("coach-input-hours").value) || 2.5;
+
+        state.coachingLogs.unshift({ id: Date.now(), subject, topic, hours, date: "Today" });
+        state.coachingSubject = subject;
+        
+        // Auto add to Spaced Revision
+        state.spacedRevisions.unshift({
+            id: Date.now(),
+            concept: `${subject}: ${topic}`,
+            interval: "1-Day",
+            dueDay: state.simCurrentDay + 1,
+            status: "Due"
+        });
+
+        e.target.reset();
+        renderAll();
+        switchTab('tab-weekly');
+    }
+
+    function convertCoachingToPlan(subj, topicText) {
+        state.coachingSubject = subj;
+        const fMode = document.getElementById("tonight-focus-mode");
+        if (fMode) fMode.value = "coaching";
+        switchTab('tab-weekly');
+        generateTonightPlan();
+    }
+
+    // -------------------------------------------------------------
+    // PYQ RADAR
+    // -------------------------------------------------------------
+    function renderRadar() {
+        const container = document.getElementById("radar-list-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        PYQ_RADAR_TOPICS.forEach(item => {
+            const pct = Math.min(100, Math.round((item.count / 176) * 100));
+            const div = document.createElement("div");
+            div.className = "radar-item";
+            div.innerHTML = `
+                <div class="radar-meta">
+                    <span><strong>${item.topic}</strong> (${item.subject})</span>
+                    <span style="color: var(--primary); font-weight:700;">${item.count} PYQs</span>
+                </div>
+                <div class="radar-bar-bg">
+                    <div class="radar-bar-fill" style="width: ${pct}%;"></div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // -------------------------------------------------------------
+    // MODES & UTILITIES
+    // -------------------------------------------------------------
+    function toggleLowEnergyMode() {
+        state.lowEnergyMode = !state.lowEnergyMode;
+        const btn = document.getElementById("btn-low-energy");
+        if (btn) btn.classList.toggle("active-low-energy", state.lowEnergyMode);
+        renderWeeklyGrid();
+        saveState();
+    }
+
+    function toggleBacklogMode() {
+        state.backlogMode = !state.backlogMode;
+        const btn = document.getElementById("btn-backlog");
+        if (btn) btn.classList.toggle("active-backlog", state.backlogMode);
+        saveState();
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+        const btn = Array.from(document.querySelectorAll(".tab-btn")).find(b => b.getAttribute("onclick")?.includes(tabId));
+        if (btn) btn.classList.add("active");
+
+        const target = document.getElementById(tabId);
+        if (target) target.classList.add("active");
+    }
+
+    function exportData() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+        const dlAnchorElem = document.createElement('a');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", `GATE_CSE_Plan_${Date.now()}.json`);
+        dlAnchorElem.click();
+    }
+
+    function importDataPrompt() {
+        const jsonStr = prompt("Paste your exported JSON plan string here:");
+        if (jsonStr) {
+            try {
+                state = JSON.parse(jsonStr);
+                renderAll();
+                alert("Plan imported successfully!");
+            } catch(e) {
+                alert("Invalid JSON data format.");
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GATE Data Science & Artificial Intelligence (DA) PYQ Platform</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A premium academic platform to practice and analyze GATE Data Science and AI previous year questions. Preserve visual fidelity, interactive practice, and clean PDF downloads.">
+    <meta name="keywords" content="GATE DA, Data Science, Artificial Intelligence, PYQ, GATE 2024, GATE 2025, GATE 2026, practice questions, linear algebra, machine learning, probability">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- jsPDF & AutoTable Local Copies (100% Offline-First) -->
+    <script src="jspdf.umd.min.js"></script>
+    <script src="jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <!-- Top Premium Header Banner -->
+    <header>
+        <div class="wrap">
+            <div>
+                <h1>GATE DA PYQ Platform</h1>
+                <p>Consolidated 2024, 2025, and 2026 Data Science & Artificial Intelligence question bank aligned with the official syllabus. High-fidelity layouts, practice mode, and clean PDF downloads.</p>
+            </div>
+            <!-- Test Toggle -->
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <a href="gate-cse-command-center.html" target="_blank" class="btn btn-secondary" style="font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    ⚡ Open Adaptive CSE Command Center ↗
+                </a>
+                <button class="btn btn-warning" id="btn-global-test-mode" onclick="toggleGlobalTestMode()">
+                     Practice Test Mode
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container Grid -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <!-- Dynamically rendered sidebar -->
+        </aside>
+
+        <!-- Main Study Workspace -->
+        <div class="workspace" id="study-workspace">
+            <!-- Toolbar: search, year, and toggle toggles -->
+            <div id="toolbar" class="toolbar-panel"></div>
+
+            <!-- Dynamic Question Cards / Practice Workspace -->
+            <main id="main-content"></main>
+
+            <!-- Dashboard Analytics Panel -->
+            <section class="dashboard-stats-panel">
+                <h2>Analysis Dashboard</h2>
+                <div id="dashboard-stats"></div>
+            </section>
+        </div>
+
+        <!-- Practice Test Mode Workspace -->
+        <div class="workspace" id="test-workspace" style="display: none;">
+            <!-- Rendered dynamically via app.js -->
+        </div>
+    </div>
+
+    <!-- Academic Footer -->
+    <footer>
+        <p>&copy; 2026 GATE Data Science & AI PYQ Analyzer. All rights reserved.</p>
+        <p style="margin-top: 6px; font-size: 11px; opacity: 0.6;">Source data basis: GATE DA 2024, 2025, and 2026 official papers and final keys. General Aptitude (Q1-Q10) is excluded from analysis.</p>
+    </footer>
+
+    <!-- Client-side Scripts -->
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

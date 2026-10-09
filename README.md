@@ -1,0 +1,97 @@
+# GATE Data Science & AI (DA) PYQ Platform
+
+A premium, offline-first educational platform designed to search, filter, practice, and analyze Previous Year Questions (PYQs) from the official **GATE Data Science & Artificial Intelligence (DA)** exams (2024, 2025, and 2026).
+
+---
+
+## 🌟 Key Features
+
+*   **Syllabus-Aligned Navigation:** Questions are systematically cataloged according to the official GATE DA syllabus (Subjects, Units, and Topics) for targeted study.
+*   **High-Fidelity Rendering:** Uses high-resolution cropped PNG images directly from the official papers. This ensures mathematical equations, code listings, and charts are rendered with 100% fidelity compared to plain HTML text.
+*   **100% Offline-First (CORS-Proof):** All cropped question images are inlined as Base64 data strings in the database layer. The platform works directly from your local filesystem (`file:///` protocol) without needing a web server or throwing browser sandbox security errors.
+*   **Interactive Practice Mode:** Enable **Practice Mode** to submit answers on-the-fly. Includes support for:
+    *   **MCQs:** Standard radio-button inputs.
+    *   **MSQs:** Multi-select checkboxes (validates correct selection subsets).
+    *   **NATs:** Smart numerical validation supporting ranges (e.g., `0.12 TO 0.13`) and decimal precision tolerance.
+*   **Practice Test (Mock Exam) Simulator:** Set up customizable mock tests.
+    *   Filter by Year, Subject, and Question Type.
+    *   Set custom paper lengths (5, 10, 15, 20, 30, or a full 55-question paper).
+    *   Features active timer tracking and official GATE marking rules ($+Marks$, and $-Marks/3$ for incorrect MCQs).
+*   **Offline PDF Generator:** Compile clean, subject-wise revision question books or single-question cards directly in your browser using client-side `jsPDF` integrations.
+*   **Analysis Dashboard:** Provides insight into high-priority recurrence topics, identical concepts repeated across exam cycles, and year-by-year subject weight distributions.
+
+---
+
+## 🛠️ Technology Stack
+
+*   **Structure:** HTML5
+*   **Styling:** Vanilla CSS3 (Custom Variables, CSS Grid, Flexbox, Glassmorphic overlays)
+*   **Logic:** Javascript (ES6+, client-side event loops, DOM-driven renderer)
+*   **Fonts:** *Plus Jakarta Sans* and *Fira Code* (for math/code blocks) from Google Fonts
+*   **PDF Libraries:** Local offline copies of `jsPDF` and `jsPDF-AutoTable`
+
+---
+
+## 🚀 Quick Start
+
+1.  Clone or download the project folder.
+2.  Locate [index.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/index.html) in the root directory.
+3.  Double-click [index.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/index.html) to open the platform in any modern web browser.
+4.  *Note:* No internet connection, server configurations, or installation commands (`npm install`) are required to run the portal.
+
+---
+
+## 📂 Project Directory Structure
+
+```
+GATE_DA_2024_2026_PYQ_Platform/
+├── index.html                     # Unified dashboard & study workspace shell
+├── styles.css                     # Premium styling sheet with Practice Test overlays
+├── app.js                         # Application state engine, interactive logic, and PDF generator
+├── database.js                    # Unified JSON questions database & Base64 asset store
+├── gate-da-archive.html           # Historical archive page (2025-2026 data only)
+├── jspdf.umd.min.js               # Local library code for PDF creation
+├── jspdf.plugin.autotable.min.js  # Local library plugin for generating PDF grids
+├── scripts/
+│   └── validate_database.py       # Automated database schema validation script
+└── images/
+    └── q_202X_XX.png              # Fallback local PNG crops of exam questions
+```
+
+---
+
+## 📊 Database Summary
+
+The platform indexes a total of **165 core questions** (Q11 to Q65) from the official papers. General Aptitude (Q1 to Q10) has been excluded.
+
+### Question Formats
+*   **Multiple Choice (MCQ):** 75 questions
+*   **Multiple Select (MSQ):** 44 questions
+*   **Numerical Answer (NAT):** 46 questions
+
+### Syllabus Matrix
+*   **Probability & Statistics:** 36 questions
+*   **Programming, Data Structures & Algorithms:** 33 questions
+*   **Machine Learning:** 28 questions
+*   **Database Management & Warehousing:** 21 questions
+*   **Linear Algebra:** 18 questions
+*   **Artificial Intelligence:** 17 questions
+*   **Calculus & Optimization:** 12 questions
+
+---
+
+## 🔧 Database Integrity Validation
+
+The database contents are verified using the Python validation script. To run the validation locally:
+
+```bash
+python scripts/validate_database.py
+```
+
+The script checks for:
+*   Presence of all required question attributes (`id`, `subject`, `unit`, `topic`).
+*   Verification of question numbers (must be between 11 and 65).
+*   Correct option object structures for MCQs/MSQs.
+*   The existence of fallback local PNG image files.
+*   Successful matching and parsing of official answer strings.
+*   Completeness of subject categorization.
