@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gateguide.dev — GATE DA & CSE PYQ Workspace</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A premium academic platform to practice and analyze GATE Data Science and AI previous year questions. Preserve visual fidelity, interactive practice, and clean PDF downloads.">
+    <meta name="keywords" content="GATE DA, Data Science, Artificial Intelligence, PYQ, GATE 2024, GATE 2025, GATE 2026, practice questions, linear algebra, machine learning, probability">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- jsPDF & AutoTable Local Copies (100% Offline-First) -->
+    <script src="jspdf.umd.min.js"></script>
+    <script src="jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        .countries-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .countries-nav .nav-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-icon-box {
+            width: 32px;
+            height: 32px;
+            background: #ffffff;
+            color: #0a0a0c;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-logo .domain-ext {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent-blue-light);
+            font-size: 0.92em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header Navigation Bar -->
+    <nav class="countries-nav">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon-box">⚡</div>
+                <span>gateguide<span class="domain-ext">.dev</span></span>
+            </a>
+
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div id="saas-user-badge"></div>
+                <a href="index.html" class="btn-pill btn-pill-secondary" style="font-size: 13px;">
+                    🏠 Home
+                </a>
+                <a href="gate-cse-command-center.html" target="_blank" class="btn-pill btn-pill-secondary" style="font-size: 13px;">
+                    ⚡ CSE Command Center ↗
+                </a>
+                <button class="btn-pill btn-pill-primary" id="btn-global-test-mode" onclick="toggleGlobalTestMode()" style="font-size: 13px;">
+                     Practice Test Mode
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Description Bar -->
+    <header style="background: rgba(18, 24, 38, 0.4); border-bottom: 1px solid var(--card-border); padding: 20px 5vw;">
+        <div class="wrap" style="max-width: 1400px; margin: 0 auto;">
+            <h1 style="font-size: 24px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">GATE DA & CSE PYQ Study Workspace</h1>
+            <p style="color: var(--text-secondary); font-size: 13.5px; max-width: 800px; line-height: 1.5;">
+                Syllabus-aligned question database for GATE Data Science & AI papers (2024, 2025, 2026). High-fidelity cropped figures, interactive practice mode, and client-side PDF downloads.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content Container Grid -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <!-- Dynamically rendered sidebar -->
+        </aside>
+
+        <!-- Main Study Workspace -->
+        <div class="workspace" id="study-workspace">
+            <!-- Toolbar: search, year, and toggle toggles -->
+            <div id="toolbar" class="toolbar-panel"></div>
+
+            <!-- Dynamic Question Cards / Practice Workspace -->
+            <main id="main-content"></main>
+
+            <!-- Dashboard Analytics Panel -->
+            <section class="dashboard-stats-panel">
+                <h2>Analysis Dashboard</h2>
+                <div id="dashboard-stats"></div>
+            </section>
+        </div>
+
+        <!-- Practice Test Mode Workspace -->
+        <div class="workspace" id="test-workspace" style="display: none;">
+            <!-- Rendered dynamically via app.js -->
+        </div>
+    </div>
+
+    <!-- Academic Footer -->
+    <footer style="border-top: 1px solid var(--card-border); padding: 30px 20px; text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 40px;">
+        <p>&copy; 2026 gateguide.dev — GATE Data Science & AI PYQ Analyzer. All rights reserved.</p>
+        <p style="margin-top: 4px; font-size: 11px; opacity: 0.6;">Source data: Official GATE DA 2024, 2025, 2026 papers and organizing institute final keys. General Aptitude (Q1-Q10) excluded.</p>
+    </footer>
+
+    <!-- Client-side Scripts -->
+    <script src="cache_manager.js"></script>
+    <script src="user_saas_store.js"></script>
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Global Command-K Keyboard Shortcut Listener for Search
+        document.addEventListener("keydown", (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+                e.preventDefault();
+                const searchInput = document.getElementById("search-input");
+                if (searchInput) {
+                    searchInput.focus();
+                    searchInput.select();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

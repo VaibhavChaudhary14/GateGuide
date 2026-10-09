@@ -45,12 +45,16 @@ A premium, offline-first educational platform designed to search, filter, practi
 ## 📂 Project Directory Structure
 
 ```
-GATE_DA_2024_2026_PYQ_Platform/
-├── index.html                     # Unified dashboard & study workspace shell
-├── styles.css                     # Premium styling sheet with Practice Test overlays
+GateGuide/
+├── index.html                     # Main SaaS Landing Page & Product Overview
+├── pyqs.html                      # Unified GATE DA PYQ Study & Practice Workspace
+├── gate-cse-command-center.html   # Adaptive GATE CSE Personal Study Command Center
+├── styles.css                     # countries.dev unified design system & tokens
 ├── app.js                         # Application state engine, interactive logic, and PDF generator
+├── user_saas_store.js             # SaaS zero-signup candidate profile & activity log engine
+├── cache_manager.js               # Client-side LRU cache memory & telemetry manager
+├── server_cache_redis.js          # Distributed Redis API server & 100-user benchmark suite
 ├── database.js                    # Unified JSON questions database & Base64 asset store
-├── gate-da-archive.html           # Historical archive page (2025-2026 data only)
 ├── jspdf.umd.min.js               # Local library code for PDF creation
 ├── jspdf.plugin.autotable.min.js  # Local library plugin for generating PDF grids
 ├── scripts/

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gateguide.dev — GATE DA & CSE PYQ Workspace</title>
+    <title>gateguide.dev — Free GATE Data Science, AI & CSE Exam Platform</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="A premium academic platform to practice and analyze GATE Data Science and AI previous year questions. Preserve visual fidelity, interactive practice, and clean PDF downloads.">
-    <meta name="keywords" content="GATE DA, Data Science, Artificial Intelligence, PYQ, GATE 2024, GATE 2025, GATE 2026, practice questions, linear algebra, machine learning, probability">
+    <meta name="description" content="gateguide.dev is a free, open academic platform for GATE Data Science, AI and CSE preparation — official PYQs, base64 cropped PNGs, practice exam simulator, AI explanations, and offline PDF compiler. No signup, no paywall, sub-10ms cache engine.">
+    <meta name="keywords" content="gateguide.dev, GATE DA, GATE CSE, Data Science, Artificial Intelligence, PYQ, GATE 2024, GATE 2025, GATE 2026, GATE 2027, Free SaaS, Exam Simulator">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Plus Jakarta Sans & Fira Code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,16 +17,22 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     
-    <!-- jsPDF & AutoTable Local Copies (100% Offline-First) -->
-    <script src="jspdf.umd.min.js"></script>
-    <script src="jspdf.plugin.autotable.min.js"></script>
-
     <style>
+        /* countries.dev Inspired Visual Architecture */
+        body {
+            background-color: #0a0a0c;
+            color: #ffffff;
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Top Blurred Navigation Bar */
         .countries-nav {
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(10, 10, 12, 0.85);
+            background: rgba(10, 10, 12, 0.8);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--card-border);
             height: 60px;
@@ -35,7 +41,7 @@
         }
 
         .countries-nav .nav-container {
-            max-width: 1400px;
+            max-width: 1200px;
             width: 100%;
             margin: 0 auto;
             padding: 0 20px;
@@ -60,7 +66,7 @@
             height: 32px;
             background: #ffffff;
             color: #0a0a0c;
-            border-radius: 9px;
+            border-radius: 9999px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -75,91 +81,525 @@
             color: var(--accent-blue-light);
             font-size: 0.92em;
         }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color var(--transition-fast);
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        /* 50px Grid Line Background Layer */
+        .hero-grid-bg {
+            position: absolute;
+            inset: 0;
+            height: 500px;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                repeating-linear-gradient(to right, rgba(37, 99, 235, 0.04), rgba(37, 99, 235, 0.04) 1px, transparent 1px, transparent 50px),
+                repeating-linear-gradient(to bottom, rgba(37, 99, 235, 0.04), rgba(37, 99, 235, 0.04) 1px, transparent 1px, transparent 50px);
+            mask-image: radial-gradient(ellipse at top, rgba(0,0,0,1) 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at top, rgba(0,0,0,1) 30%, transparent 80%);
+        }
+
+        /* Hero Wrapper */
+        .hero-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 70px 20px 50px;
+            text-align: center;
+        }
+
+        .hero-section-box {
+            position: relative;
+            background: #0e121b;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 60px 30px 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .corner-sparkle {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            color: var(--accent-blue-light);
+        }
+        .sparkle-top-left { top: -9px; left: -9px; }
+        .sparkle-bottom-right { bottom: -9px; right: -9px; }
+
+        .category-eyebrow {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-blue-light);
+            margin-bottom: 14px;
+        }
+
+        .hero-heading {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            max-width: 820px;
+            margin: 0 auto 20px;
+        }
+
+        .hero-subtext {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 780px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .hero-subtext b {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Live Search Trigger Input Bar */
+        .hero-search-wrapper {
+            max-width: 620px;
+            margin: 0 auto 30px;
+        }
+
+        /* Quick Stat Pill Bar */
+        .quick-metrics-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            padding-top: 30px;
+            border-top: 1px solid var(--card-border);
+            margin-top: 30px;
+        }
+
+        .metric-unit {
+            text-align: center;
+        }
+        .metric-unit .val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            font-family: var(--font-mono);
+        }
+        .metric-unit .lbl {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Section Headings */
+        .section-header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* countries.dev Crisp 1px Grid Cards */
+        .countries-grid-section {
+            max-width: 1100px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .grid-card-item {
+            padding: 28px 24px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+        }
+
+        .grid-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .grid-card-header .icon {
+            font-size: 1.3rem;
+        }
+
+        .arrow-up-icon {
+            margin-left: auto;
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            opacity: 0;
+            transform: translateX(-4px);
+            transition: all var(--transition-normal);
+        }
+
+        .grid-card-item:hover .arrow-up-icon {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--accent-blue-light);
+        }
+
+        .grid-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        /* Syllabus Atlas Accordion List */
+        .atlas-accordion-wrapper {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .atlas-group {
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .atlas-summary {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            cursor: pointer;
+            list-style: none;
+            transition: background var(--transition-fast);
+        }
+
+        .atlas-summary:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .atlas-summary h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .atlas-count {
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .atlas-topics-list {
+            padding: 0 20px 20px 48px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .atlas-topic-chip {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .atlas-topic-chip:hover {
+            color: #ffffff;
+            border-color: var(--accent-blue-light);
+            background: rgba(56, 189, 248, 0.1);
+        }
     </style>
 </head>
 <body>
-    <!-- Top countries.dev Header Navigation Bar -->
+
+    <!-- 50px Grid Line Background -->
+    <div class="hero-grid-bg"></div>
+
+    <!-- Navigation Header -->
     <nav class="countries-nav">
         <div class="nav-container">
-            <a href="landing.html" class="brand-logo">
+            <a href="index.html" class="brand-logo">
                 <div class="brand-icon-box">⚡</div>
                 <span>gateguide<span class="domain-ext">.dev</span></span>
             </a>
 
-            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <ul class="nav-links">
+                <li><a href="pyqs.html">PYQs</a></li>
+                <li><a href="gate-cse-command-center.html">CSE Planner</a></li>
+                <li><a href="technical_documentation.md" target="_blank">Docs</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <div id="saas-user-badge"></div>
-                <a href="landing.html" class="btn-pill btn-pill-secondary" style="font-size: 13px;">
-                    🏠 Landing Page
+                <a href="pyqs.html" class="btn-pill btn-pill-primary">
+                    Explore PYQs ↗
                 </a>
-                <a href="gate-cse-command-center.html" target="_blank" class="btn-pill btn-pill-secondary" style="font-size: 13px;">
-                    ⚡ CSE Command Center ↗
-                </a>
-                <button class="btn-pill btn-pill-primary" id="btn-global-test-mode" onclick="toggleGlobalTestMode()" style="font-size: 13px;">
-                     Practice Test Mode
-                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Header Description Bar -->
-    <header style="background: rgba(18, 24, 38, 0.4); border-bottom: 1px solid var(--card-border); padding: 20px 5vw;">
-        <div class="wrap" style="max-width: 1400px; margin: 0 auto;">
-            <h1 style="font-size: 24px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">GATE DA & CSE PYQ Study Workspace</h1>
-            <p style="color: var(--text-secondary); font-size: 13.5px; max-width: 800px; line-height: 1.5;">
-                Syllabus-aligned question database for GATE Data Science & AI papers (2024, 2025, 2026). High-fidelity cropped figures, interactive practice mode, and client-side PDF downloads.
+    <!-- Main Hero Wrapper -->
+    <main class="hero-wrapper">
+        <div class="hero-section-box">
+            <!-- Corner Sparkles -->
+            <svg class="corner-sparkle sparkle-top-left" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+            <svg class="corner-sparkle sparkle-bottom-right" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+
+            <p class="category-eyebrow">Free Open Academic Platform</p>
+            <h1 class="hero-heading">The free GATE Data Science, AI & CSE platform for developers</h1>
+            
+            <p class="hero-subtext">
+                <b>gateguide.dev</b> is a free REST & interactive platform for <b>165+ GATE DA & CSE PYQs</b> — official questions, base64 cropped PNG assets, practice mode, NAT numerical range validators — plus <b>mock exam simulator</b>, <b>AI solutions</b>, and <b>offline PDF books</b>. No API key, no paywall, sub-10ms cache memory.
             </p>
+
+            <!-- Search Bar Input Pill with KBD Shortcut -->
+            <div class="hero-search-wrapper">
+                <div class="countries-search-bar" onclick="window.location.href='pyqs.html'">
+                    <span style="color: var(--text-muted); font-size: 15px;">🔍</span>
+                    <input type="text" placeholder="Search a question, subject or topic — try “Bayes Theorem” or “Q58”" readonly>
+                    <kbd>⌘K</kbd>
+                </div>
+            </div>
+
+            <!-- Action Pill Buttons -->
+            <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+                <a href="pyqs.html" class="btn-pill btn-pill-primary">Explore the PYQ data</a>
+                <button class="btn-pill btn-pill-secondary" onclick="window.gateSaaSStore.openProfileModal()">👤 Candidate Profile & Logs</button>
+            </div>
+
+            <!-- Quick Metrics Row -->
+            <div class="quick-metrics-row">
+                <div class="metric-unit">
+                    <div class="val">165</div>
+                    <div class="lbl">Official PYQs</div>
+                </div>
+                <div class="metric-unit">
+                    <div class="val">100%</div>
+                    <div class="lbl">CORS-Proof Base64</div>
+                </div>
+                <div class="metric-unit">
+                    <div class="val">0s</div>
+                    <div class="lbl">Signup Wall</div>
+                </div>
+                <div class="metric-unit">
+                    <div class="val">&lt; 10ms</div>
+                    <div class="lbl">Redis Cache Memory</div>
+                </div>
+            </div>
         </div>
-    </header>
+    </main>
 
-    <!-- Main Content Container Grid -->
-    <div class="container">
-        <!-- Sidebar Navigation -->
-        <aside id="sidebar" class="sidebar">
-            <!-- Dynamically rendered sidebar -->
-        </aside>
-
-        <!-- Main Study Workspace -->
-        <div class="workspace" id="study-workspace">
-            <!-- Toolbar: search, year, and toggle toggles -->
-            <div id="toolbar" class="toolbar-panel"></div>
-
-            <!-- Dynamic Question Cards / Practice Workspace -->
-            <main id="main-content"></main>
-
-            <!-- Dashboard Analytics Panel -->
-            <section class="dashboard-stats-panel">
-                <h2>Analysis Dashboard</h2>
-                <div id="dashboard-stats"></div>
-            </section>
-        </div>
-
-        <!-- Practice Test Mode Workspace -->
-        <div class="workspace" id="test-workspace" style="display: none;">
-            <!-- Rendered dynamically via app.js -->
-        </div>
+    <!-- One Platform Section -->
+    <div class="section-header">
+        <p class="category-eyebrow">Unified Engine</p>
+        <h2>All your GATE preparation tools in one place</h2>
+        <p>Questions, syllabus units, mock exam scoring, NAT precision checkers, and activity logs — clean JSON & DOM, free without a key.</p>
     </div>
 
-    <!-- Academic Footer -->
-    <footer style="border-top: 1px solid var(--card-border); padding: 30px 20px; text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 40px;">
-        <p>&copy; 2026 gateguide.dev — GATE Data Science & AI PYQ Analyzer. All rights reserved.</p>
-        <p style="margin-top: 4px; font-size: 11px; opacity: 0.6;">Source data: Official GATE DA 2024, 2025, 2026 papers and organizing institute final keys. General Aptitude (Q1-Q10) excluded.</p>
+    <!-- countries.dev 3-Column Grid Container -->
+    <section class="countries-grid-section">
+        <div class="grid-border-container" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+            <a href="pyqs.html" class="grid-card-item">
+                <div class="grid-card-header">
+                    <span class="icon">🎯</span>
+                    <span>Syllabus PYQ Matrix</span>
+                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </div>
+                <p class="grid-card-desc">ISO-like syllabus categorization across Probability, ML, AI, Linear Algebra, DBMS, Algorithms, and Calculus.</p>
+            </a>
+
+            <a href="pyqs.html" class="grid-card-item">
+                <div class="grid-card-header">
+                    <span class="icon">🖼️</span>
+                    <span>High-Fidelity Formulas</span>
+                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </div>
+                <p class="grid-card-desc">Base64 inlined PNG crops direct from official GATE papers — zero LaTeX font corruption or missing diagram errors.</p>
+            </a>
+
+            <a href="pyqs.html" class="grid-card-item">
+                <div class="grid-card-header">
+                    <span class="icon">⏱️</span>
+                    <span>GATE Exam Simulator</span>
+                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </div>
+                <p class="grid-card-desc">Interactive test engine supporting MCQs (-1/3 mark penalty), MSQs, and NAT numerical tolerance range validation.</p>
+            </a>
+
+            <a href="pyqs.html" class="grid-card-item">
+                <div class="grid-card-header">
+                    <span class="icon">🧠</span>
+                    <span>AI Solutions & Step-by-Step</span>
+                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </div>
+                <p class="grid-card-desc">Detailed mathematical derivations and conceptual explanations available instantly beneath every problem.</p>
+            </a>
+
+            <a href="pyqs.html" class="grid-card-item">
+                <div class="grid-card-header">
+                    <span class="icon">📄</span>
+                    <span>Offline PDF Book Compiler</span>
+                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </div>
+                <p class="grid-card-desc">Export subject-wise revision question books or single-question cards directly in browser using client-side jsPDF.</p>
+            </a>
+
+            <a href="pyqs.html" class="grid-card-item">
+                <div class="grid-card-header">
+                    <span class="icon">⚡</span>
+                    <span>Redis L4 Cache Architecture</span>
+                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </div>
+                <p class="grid-card-desc">Multi-tier memory architecture benchmarked for 100+ concurrent aspirants at 35,000 QPS with sub-10ms response time.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Syllabus Atlas Accordion Section -->
+    <div class="section-header">
+        <p class="category-eyebrow">Syllabus Atlas</p>
+        <h2>Browse questions by subject area</h2>
+        <p>Explore all 7 core subjects and 165 official paper questions. Click any topic to jump directly to its practice bank.</p>
+    </div>
+
+    <section class="atlas-accordion-wrapper">
+        <div style="border: 1px solid var(--card-border); border-radius: var(--radius-lg); overflow: hidden; background: #0e121b;">
+            <details class="atlas-group" open>
+                <summary class="atlas-summary">
+                    <span>🎲</span>
+                    <h3>Probability & Statistics</h3>
+                    <span class="atlas-count">36 Questions</span>
+                </summary>
+                <div class="atlas-topics-list">
+                    <a href="pyqs.html" class="atlas-topic-chip">Bayes Theorem (Q58)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Exponential Distribution (Q57)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Uniform Distribution (Q56)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Mean, Variance & Covariance</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Conditional Probability</a>
+                </div>
+            </details>
+
+            <details class="atlas-group">
+                <summary class="atlas-summary">
+                    <span>💻</span>
+                    <h3>Programming, Data Structures & Algorithms</h3>
+                    <span class="atlas-count">33 Questions</span>
+                </summary>
+                <div class="atlas-topics-list">
+                    <a href="pyqs.html" class="atlas-topic-chip">Binary Tree Properties (Q52)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Sorting & Searching Complexity</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Dynamic Programming</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Graph Traversals (BFS/DFS)</a>
+                </div>
+            </details>
+
+            <details class="atlas-group">
+                <summary class="atlas-summary">
+                    <span>🤖</span>
+                    <h3>Machine Learning</h3>
+                    <span class="atlas-count">28 Questions</span>
+                </summary>
+                <div class="atlas-topics-list">
+                    <a href="pyqs.html" class="atlas-topic-chip">Linear & Logistic Regression</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Decision Trees & Random Forests</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">K-Means Clustering & PCA</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Neural Networks & Loss Functions</a>
+                </div>
+            </details>
+
+            <details class="atlas-group">
+                <summary class="atlas-summary">
+                    <span>🗄️</span>
+                    <h3>Database Management & Warehousing</h3>
+                    <span class="atlas-count">21 Questions</span>
+                </summary>
+                <div class="atlas-topics-list">
+                    <a href="pyqs.html" class="atlas-topic-chip">Relational Algebra & SQL</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Normal Forms (1NF, 2NF, 3NF, BCNF)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">B+ Trees & Indexing</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">ER Diagrams & Data Warehousing</a>
+                </div>
+            </details>
+
+            <details class="atlas-group">
+                <summary class="atlas-summary">
+                    <span>📐</span>
+                    <h3>Linear Algebra</h3>
+                    <span class="atlas-count">18 Questions</span>
+                </summary>
+                <div class="atlas-topics-list">
+                    <a href="pyqs.html" class="atlas-topic-chip">Rank-One SVD (Q61)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Eigenvalues & Eigenvectors</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Matrix Decomposition (LU/QR)</a>
+                    <a href="pyqs.html" class="atlas-topic-chip">Vector Spaces & Basis</a>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px;">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span style="font-weight: 700; color: #fff;">gateguide.dev</span> — Free GATE Data Science, AI & CSE Exam Engine
+            </div>
+            <div style="display: flex; gap: 20px;">
+                <a href="pyqs.html" style="color: var(--text-secondary); text-decoration: none;">PYQs</a>
+                <a href="gate-cse-command-center.html" style="color: var(--text-secondary); text-decoration: none;">CSE Planner</a>
+                <a href="technical_documentation.md" target="_blank" style="color: var(--text-secondary); text-decoration: none;">Docs</a>
+            </div>
+        </div>
     </footer>
 
     <!-- Client-side Scripts -->
     <script src="cache_manager.js"></script>
     <script src="user_saas_store.js"></script>
-    <script src="database.js"></script>
-    <script src="app.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.gateSaaSStore) {
+                window.gateSaaSStore.notifyUI();
+            }
+        });
+
         // Global Command-K Keyboard Shortcut Listener
         document.addEventListener("keydown", (e) => {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
                 e.preventDefault();
-                const searchInput = document.getElementById("search-input");
-                if (searchInput) {
-                    searchInput.focus();
-                    searchInput.select();
-                }
+                window.location.href = "pyqs.html";
             }
         });
     </script>
