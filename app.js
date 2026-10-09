@@ -29,6 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initApp() {
+    // Check URL parameters for search term (e.g. ?search=bayes)
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchParam = urlParams.get('search');
+        if (searchParam) {
+            searchQuery = searchParam.trim();
+        }
+    } catch (e) {
+        console.warn("Could not parse URL search parameters:", e);
+    }
+
     renderSidebar();
     renderToolbar();
     renderContent();

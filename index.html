@@ -360,7 +360,7 @@
             <ul class="nav-links">
                 <li><a href="pyqs.html">PYQs</a></li>
                 <li><a href="gate-cse-command-center.html">CSE Planner</a></li>
-                <li><a href="technical_documentation.md" target="_blank">Docs</a></li>
+                <li><a href="docs.html">Docs</a></li>
             </ul>
 
             <div style="display: flex; align-items: center; gap: 12px;">
@@ -388,11 +388,13 @@
 
             <!-- Search Bar Input Pill with KBD Shortcut -->
             <div class="hero-search-wrapper">
-                <div class="countries-search-bar" onclick="window.location.href='pyqs.html'">
+                <form id="hero-search-form" onsubmit="handleLandingSearch(event)" class="countries-search-bar" style="cursor: text;">
                     <span style="color: var(--text-muted); font-size: 15px;">🔍</span>
-                    <input type="text" placeholder="Search a question, subject or topic — try “Bayes Theorem” or “Q58”" readonly>
-                    <kbd>⌘K</kbd>
-                </div>
+                    <input type="text" id="hero-search-input" placeholder="Search a question, subject or topic — try “Bayes Theorem” or “Q58”">
+                    <button type="submit" style="background: transparent; border: none; cursor: pointer; display: flex; align-items: center;">
+                        <kbd>⌘K</kbd>
+                    </button>
+                </form>
             </div>
 
             <!-- Action Pill Buttons -->
@@ -580,7 +582,7 @@
             <div style="display: flex; gap: 20px;">
                 <a href="pyqs.html" style="color: var(--text-secondary); text-decoration: none;">PYQs</a>
                 <a href="gate-cse-command-center.html" style="color: var(--text-secondary); text-decoration: none;">CSE Planner</a>
-                <a href="technical_documentation.md" target="_blank" style="color: var(--text-secondary); text-decoration: none;">Docs</a>
+                <a href="docs.html" style="color: var(--text-secondary); text-decoration: none;">Docs</a>
             </div>
         </div>
     </footer>
@@ -595,11 +597,26 @@
             }
         });
 
+        function handleLandingSearch(event) {
+            event.preventDefault();
+            const val = document.getElementById("hero-search-input").value;
+            if (val && val.trim()) {
+                window.location.href = `pyqs.html?search=${encodeURIComponent(val.trim())}`;
+            } else {
+                window.location.href = "pyqs.html";
+            }
+        }
+
         // Global Command-K Keyboard Shortcut Listener
         document.addEventListener("keydown", (e) => {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
                 e.preventDefault();
-                window.location.href = "pyqs.html";
+                const heroInput = document.getElementById("hero-search-input");
+                if (heroInput) {
+                    heroInput.focus();
+                } else {
+                    window.location.href = "pyqs.html";
+                }
             }
         });
     </script>
