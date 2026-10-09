@@ -1,0 +1,57 @@
+name: GATEGuide Continuous Integration & Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-database:
+    name: Database Schema & Asset Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Database Integrity Validator
+        run: python scripts/validate_database.py
+
+  benchmark-server:
+    name: Node.js HTTP Server & Load Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify Server Syntax
+        run: node -e "require('./server_cache_redis.js'); console.log('Server syntax valid!');"
+
+      - name: Run Real HTTP 100-Client Concurrency Benchmark
+        run: node scripts/benchmark_http.js
+
+  verify-documentation:
+    name: Markdown Link & Integrity Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Audit Local File Path Links
+        run: |
+          if grep -rn "file:///c:/" *.md; then
+            echo "Error: Absolute local Windows file:/// links found in Markdown documentation!"
+            exit 1
+          else
+            echo "All Markdown links are relative and clean."
+          fi

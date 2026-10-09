@@ -47,7 +47,7 @@ GATE_DA_2024_2026_PYQ_Platform/
 
 ## 3. Database System & Data Modeling
 
-The core of the application is powered by a static relational database defined in [database.js](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/database.js) as a global constant array named `QUESTIONS_DATABASE`.
+The core of the application is powered by a static relational database defined in [database.js](database.js) as a global constant array named `QUESTIONS_DATABASE`.
 
 ### 3.1 Question Object Schema
 Each question entry in the database is modeled as a structured JSON object with the following fields:
@@ -187,7 +187,7 @@ Located at the bottom of the workspace, this section provides analytical summari
 
 ## 5. State Management & Interaction Logic
 
-All state management is handled inside [app.js](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/app.js) using global state variables. State updates trigger modular DOM rendering methods (`renderSidebar()`, `renderContent()`, `renderDashboard()`).
+All state management is handled inside [app.js](app.js) using global state variables. State updates trigger modular DOM rendering methods (`renderSidebar()`, `renderContent()`, `renderDashboard()`).
 
 ### 5.1 Global State Properties
 ```javascript
@@ -306,7 +306,7 @@ The "Download Subject PDF" option creates a consolidated revision book for a cho
 
 ## 8. Database Validation Script
 
-To maintain database integrity, [scripts/validate_database.py](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GATE_DA_2024_2026_PYQ_Platform/scripts/validate_database.py) runs checks against the database before any release.
+To maintain database integrity, [scripts/validate_database.py](scripts/validate_database.py) runs checks against the database before any release.
 
 ### 8.1 Validation Checks
 1.  **Question Count Verification:** Assures exactly 165 questions are present.

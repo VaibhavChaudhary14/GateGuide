@@ -4,19 +4,26 @@
 
 ## 1. System Architecture Overview
 
-GATEGuide follows a **Multi-Tier Hybrid Architecture** combining a zero-dependency client-side single-page application (SPA) with an optional high-performance Redis L4 server layer.
+GATEGuide utilizes a **Hybrid Multi-Tier Architecture** centered around a 100% offline-first, client-side Single-Page Application (SPA) paired with an optional Node.js backend cache API service.
 
 ```
-+-----------------------------------------------------------------------------------+
-|                            GATEGuide Multi-Tier Architecture                       |
-+--------------------------+--------------------------------------------------------+
-| Tier 1: Client Memory    | LRU Cache Engine (120 query capacity, < 0.1ms latency) |
-| Tier 2: Client Storage   | LocalStorage & IndexedDB (Session, Streak, Activity)   |
-| Tier 3: Edge & CDN       | Cloudflare/Nginx HTTP Caching (Assets, Fonts, PDFs)    |
-| Tier 4: Server Cache API | Node.js + Redis Cluster (35,000+ QPS, ZADD Ranks)      |
-| Tier 5: Persistent DB    | PostgreSQL / MongoDB (User Profiles & Analytics)       |
-+--------------------------+--------------------------------------------------------+
++-----------------------------------------------------------------------------------------+
+|                              GATEGuide Multi-Tier Architecture                          |
++--------------------------+------------------------------------+-------------------------+
+| Layer Tier               | Implementation Technology          | Production Status       |
++--------------------------+------------------------------------+-------------------------+
+| Tier 1: Client LRU Cache | In-Memory LRU (cache_manager.js)   | ✅ Implemented & Active  |
+| Tier 2: Device Storage   | LocalStorage (user_saas_store.js)  | ✅ Implemented & Active  |
+| Tier 3: Client PDF Engine| Client jsPDF + AutoTable           | ✅ Implemented & Active  |
+| Tier 4: Backend API      | Node.js Server (server_cache_redis)| ⚡ Implemented Prototype |
+| Tier 5: Redis Distributed| ioredis (TCP socket fallback)      | ⚡ Optional Extension   |
+| Tier 6: Cloud Edge / CDN | Cloudflare / Nginx Reverse Proxy   | 🎯 Proposed Target      |
+| Tier 7: Persistent DB    | PostgreSQL / MongoDB Cluster       | 🎯 Proposed Target      |
++--------------------------+------------------------------------+-------------------------+
 ```
+
+> [!NOTE]
+> **Architecture Clarification**: The core offline educational platform operates 100% locally in the candidate's browser (Tiers 1, 2, 3) without requiring any backend server. Tiers 4 and 5 provide an optional Node.js backend prototype with a true sliding-window rate limiter, while Tiers 6 and 7 represent future SaaS production deployment targets.
 
 ---
 
@@ -62,7 +69,7 @@ sequenceDiagram
     participant SPA as pyqs.html / app.js
     participant LRU as Client LRU Cache (cache_manager.js)
     participant Storage as LocalStorage (user_saas_store.js)
-    participant Redis as Redis L4 API (server_cache_redis.js)
+    participant Backend as Node.js API (server_cache_redis.js)
 
     Candidate->>SPA: Type Query in Search Bar / Filter Topic
     SPA->>LRU: Check getFilteredQuestions(queryKey)
@@ -76,15 +83,18 @@ sequenceDiagram
 
     Candidate->>SPA: Submit Question Answer / Complete Exam
     SPA->>Storage: Log Activity & Update Streak
-    SPA->>Redis: POST /api/v1/test/submit (ZADD Score)
-    Redis-->>SPA: Return Live Leaderboard Rank
-    SPA->>Candidate: Show Real-Time Performance & Ranks
+    opt Optional Backend Connection
+        SPA->>Backend: POST /api/v1/test/submit (Leaderboard Score)
+        Backend-->>SPA: Return Rank & Participant Count
+    end
+    SPA->>Candidate: Show Real-Time Performance & Analytics
 ```
 
 ---
 
-## 4. Offline-First Compliance & Security
+## 4. Offline-First Compliance & Security Controls
 
 - **Zero External Telemetry Requirement**: Core question retrieval, practice submission, exam simulation, PDF export, and study logs run 100% locally in the browser without network connection.
 - **Client Security**: No private API keys or tokens are stored in client-side bundles.
 - **CORS Protection**: Base64 asset inlining prevents cross-origin image loading errors under `file:///` protocol.
+- **Rate Limiting Security**: Node.js backend prototype employs a true sliding-window log bucket rate limiter (150 req/min limit per IP) to prevent server flooding.

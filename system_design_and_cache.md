@@ -4,7 +4,7 @@
 
 ## 1. Executive Summary & High-Level Objectives
 
-**GATEGuide** (GATE Data Science & Artificial Intelligence / Computer Science Engineering Study & Mock Exam Platform) is engineered to deliver sub-10ms response times, zero database bottlenecks, and 100% operational availability during high-traffic exam periods.
+**GATEGuide** (GATE Data Science & Artificial Intelligence / Computer Science Engineering Study & Mock Exam Platform) is engineered to deliver sub-10ms client response times, zero database bottlenecks, and 100% operational availability during high-traffic exam periods.
 
 This document presents the **Complete System Design and Multi-Tier Cache Memory Architecture** specifically scaled and validated for **100 to 1,000+ simultaneous concurrent candidates**.
 
@@ -13,8 +13,8 @@ This document presents the **Complete System Design and Multi-Tier Cache Memory 
 |                            GATEGuide High-Level Scale                             |
 +--------------------------+--------------------------------------------------------+
 | Target Concurrency       | 100 Active Candidates (Scalable to 1,000+ Users)       |
-| Latency SLA Target       | < 10ms (Achieved 7.8ms in 100-User Benchmark)          |
-| Peak Throughput Capacity | 35,230 QPS (Queries / Sec)                             |
+| Latency SLA Target       | < 10ms Client / < 90ms Real HTTP Socket Latency       |
+| Measured HTTP Throughput | 981.2 QPS (Real HTTP TCP Sockets via benchmark_http.js)|
 | Memory Footprint         | ~25MB Base Assets + 5MB RAM for 100 User Sessions      |
 | Availability Target      | 99.99% Offline-First & Resilient Multi-Tier Cache      |
 +--------------------------+--------------------------------------------------------+
@@ -47,38 +47,35 @@ This document presents the **Complete System Design and Multi-Tier Cache Memory 
 
 ## 3. End-to-End System Architecture Blueprint
 
-The system employs a 5-tier progressive fallback architecture ensuring zero single points of failure.
+The system employs a 5-tier progressive architecture ensuring zero single points of failure.
 
 ```mermaid
 graph TD
-    subgraph Tier1 [Tier 1: Client Browser Layer]
+    subgraph Tier1 [Tier 1: Client Browser Layer - Active]
         UI[Single-Page Interface]
         LRU[Client In-Memory LRU Cache\ncapacity: 120 queries]
         LS[LocalStorage / IndexedDB\nOffline Session Store]
     end
 
-    subgraph Tier2 [Tier 2: Edge & CDN Layer]
-        CDN[Cloudflare / Nginx Edge CDN\nStatic Assets & Base64 PNGs]
+    subgraph Tier2 [Tier 2: Prototype Backend Server Layer]
+        Nginx[Sliding Window Rate Limiter\nLimit: 150 req/min/IP]
+        NodeApp[Node.js HTTP API Engine]
     end
 
-    subgraph Tier3 [Tier 3: Reverse Proxy & API Gateway]
-        Nginx[Nginx Load Balancer\nRate Limiter: 150 req/min/IP]
-    end
-
-    subgraph Tier4 [Tier 4: Distributed Application & Cache Memory Layer]
-        NodeApp[Node.js API Cluster\nZero-Dependency HTTP Server]
-        Redis[(Redis L4 Cache Engine\nLRU Eviction Policy)]
+    subgraph Tier3 [Tier 3: Distributed Cache Layer - Optional]
+        Redis[(Redis Server / ioredis Manager\nIn-Memory Map Fallback)]
         Leaderboard[Redis Sorted Sets ZADD\nReal-time Candidate Ranks]
     end
 
-    subgraph Tier5 [Tier 5: Persistent Database Layer]
-        DB[(PostgreSQL / MongoDB\nUser Profiles & Historical Analytics)]
+    subgraph Tier4 [Tier 4: Proposed Cloud Infrastructure]
+        CDN[Cloudflare CDN & Edge Caching]
+        DB[(PostgreSQL / MongoDB\nUser Profiles & Analytics)]
     end
 
     UI -->|1. Check Local LRU| LRU
     LRU -.->|Hit 0ms| UI
     LRU -->|2. Miss - API Request| Nginx
-    Nginx -->|3. Route & Balance| NodeApp
+    Nginx -->|3. Route & Process| NodeApp
     NodeApp <-->|4. Read/Write Cache| Redis
     NodeApp <-->|5. Realtime Leaderboard| Leaderboard
     NodeApp -.->|6. Async Writeback| DB
@@ -96,17 +93,13 @@ graph TD
 - **Latency:** `< 0.1ms`.
 
 ### 4.2 Tier 2: Persistent Storage Layer (`LocalStorage` & `IndexedDB`)
-- **Engine:** Browser persistent key-value store.
-- **Usage:** Auto-saves user mock test answers, incomplete exam checkpoints, timer states, and user theme preferences.
+- **Engine:** Browser persistent key-value store (`user_saas_store.js`).
+- **Usage:** Auto-saves user mock test answers, incomplete exam checkpoints, timer states, and user profile logs.
 - **Resilience:** If browser refreshes or loses network connection, state is instantly restored.
 
-### 4.3 Tier 3: Edge & CDN Asset Caching
-- **Engine:** Cloudflare / Nginx HTTP Caching.
-- **Usage:** Caches `index.html`, `styles.css`, `app.js`, `database.js`, `cache_manager.js`, `jspdf.umd.min.js`, and raw PNG image crops.
-- **Cache-Control:** `public, max-age=31536000, immutable` for static assets.
-
-### 4.4 Tier 4: Server Distributed Redis Cache Memory (`server_cache_redis.js`)
-- **Engine:** Redis Cluster / Standalone Redis Server with `allkeys-lru` eviction policy.
+### 4.3 Tier 3: Server Redis / In-Memory Cache Engine (`server_cache_redis.js`)
+- **Engine:** Dynamic `ioredis` connection when configured with `REDIS_URL`, or pure Node.js in-memory Map fallback.
+- **Rate Limiting:** True Sliding-Window log bucket algorithm (150 requests / 60 seconds per client IP).
 - **Key Schema Structure:**
 
 | Cache Key Pattern | Data Structure | TTL | Purpose |
@@ -115,13 +108,13 @@ graph TD
 | `gg:q:filter:{hash}` | String (JSON) | 900s (15m) | Filtered search result sets |
 | `gg:user:{userId}:session` | Hash | 10800s (3hr) | Candidate active exam session state |
 | `gg:leaderboard:{testId}` | Sorted Set (`ZADD`) | 86400s (24hr) | Real-time candidate ranking ($O(\log N)$) |
-| `gg:ratelimit:{clientIp}` | String (Counter) | 60s (1m) | DDoS protection & sliding window rate limits |
+| `gg:ratelimit:{clientIp}` | Array (Timestamps) | 60s (1m) | True sliding window rate limit timestamps |
 
 ---
 
 ## 5. Real-Time Leaderboard Algorithm ($O(\log N)$)
 
-For 100+ concurrent aspirants taking a mock test simultaneously, updating ranks using a traditional relational SQL database query (`SELECT ORDER BY score DESC`) creates lock contention and database CPU spikes.
+For 100+ concurrent aspirants taking a mock test simultaneously, updating ranks using a traditional relational SQL database query creates lock contention and database CPU spikes.
 
 GATEGuide solves this using **Redis Sorted Sets (`ZADD` and `ZREVRANGE`)**:
 
@@ -129,63 +122,58 @@ GATEGuide solves this using **Redis Sorted Sets (`ZADD` and `ZREVRANGE`)**:
 // O(log N) Leaderboard Update in Redis
 async function updateLeaderboardScore(testId, userId, userName, score) {
     const key = `gg:leaderboard:${testId}`;
-    // Insert/update candidate score with O(log N) efficiency
     await redis.zadd(key, score, JSON.stringify({ userId, userName, timestamp: Date.now() }));
-    // Fetch top 100 ranks instantly
     return await redis.zrevrange(key, 0, 99, 'WITHSCORES');
 }
 ```
 
 ---
 
-## 6. Empirical Benchmark Results (100 Concurrent Users)
+## 6. Empirical Real HTTP Socket Benchmark Results (100 Concurrent Clients)
 
-The system design was stress-tested using the Node.js benchmark engine in `server_cache_redis.js` simulating **100 concurrent aspirants** performing concurrent question queries, test score submissions, and leaderboard operations.
+The API server was benchmarked using `scripts/benchmark_http.js`, which spawns **100 concurrent HTTP client TCP connections** issuing 300 real network HTTP requests against the Node.js API server.
 
 ```bash
-node server_cache_redis.js
+node scripts/benchmark_http.js
 ```
 
-### Benchmark Metrics Output:
+### Benchmark Output:
 
 ```
 ============================================================
-🚀 RUNNING BENCHMARK SIMULATION FOR 100 CONCURRENT USERS
+🚀 STARTING REAL HTTP CONCURRENT NETWORK BENCHMARK (100 CLIENTS)
+   Engine Mode: In-Memory Prototype
 ============================================================
 
-📊 BENCHMARK RESULTS FOR 100 CONCURRENT USERS:
-  - Total Completed Concurrent User Sessions: 100 / 100
-  - Total Operations Executed: 300 ops
-  - Total Elapsed Wall-Clock Time: 8.52 ms
-  - Average Latency Per User: 7.80 ms
-  - Server Throughput: 35,230.7 QPS (Requests / sec)
-  - Redis Cache Hit Ratio: 100% (Subsequent Reads) / 33.3% (Cold Start)
-  - System Capacity Verification: SUCCESSFUL FOR 100+ CONCURRENT USERS
+📊 REAL HTTP CONCURRENT NETWORK BENCHMARK RESULTS:
+  - Execution Mode Disclosed: In-Memory Prototype
+  - Total Concurrent HTTP Clients: 100
+  - Total HTTP Socket Requests Executed: 300 (300 Success / 0 Fail)
+  - Total Network Wall-Clock Time: 305.76 ms
+  - Average HTTP Socket Latency: 86.33 ms
+  - Real HTTP API Socket Throughput: 981.2 QPS (Requests / sec over TCP socket)
+  - System Capacity Verification: PASSED FOR 100 CONCURRENT HTTP CLIENTS
 ============================================================
 ```
 
 > [!IMPORTANT]
-> The benchmark confirms that under 100 concurrent user load, total processing completes in **8.52 ms** with an average latency of **7.80 ms per user**, demonstrating system capacity capable of handling **35,000+ requests per second**.
+> The real HTTP network socket benchmark confirms that 100 concurrent clients executing 300 requests over local TCP network sockets complete in **305.76 ms** with an average socket latency of **86.33 ms** and a real HTTP network throughput of **981.2 QPS**.
 
 ---
 
 ## 7. Verification Checklist & Instructions
 
 1. **Client-Side Cache Verification:**
-   - Open `index.html` or `gate-cse-command-center.html` in any browser.
+   - Open `index.html` or `pyqs.html` in any browser.
    - Open Browser Developer Tools Console (`F12`).
    - Run: `window.gateCacheManager.getCombinedStats()` to view live LRU hits, misses, saved latency, and memory metrics.
 
-2. **Server-Side Redis API & Benchmark Execution:**
-   - Run the zero-dependency Node.js server and benchmark test:
+2. **Automated Database & HTTP Benchmark Verification:**
+   - Run database schema & Base64 PNG binary integrity check:
      ```bash
-     node server_cache_redis.js
+     python scripts/validate_database.py
      ```
-   - Test the live API health endpoint:
+   - Run 100-client real HTTP socket network load benchmark:
      ```bash
-     curl http://localhost:3000/api/v1/health
+     node scripts/benchmark_http.js
      ```
-
----
-
-*Documentation compiled and verified for GATEGuide 2026/2027 Production Scale.*

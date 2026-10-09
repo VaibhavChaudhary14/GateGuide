@@ -1,4 +1,4 @@
-# GATE Data Science & AI (DA) PYQ Platform
+# GATE Data Science & Artificial Intelligence (DA) PYQ Platform
 
 A premium, offline-first educational platform designed to search, filter, practice, and analyze Previous Year Questions (PYQs) from the official **GATE Data Science & Artificial Intelligence (DA)** exams (2024, 2025, and 2026).
 
@@ -18,7 +18,7 @@ A premium, offline-first educational platform designed to search, filter, practi
     *   Set custom paper lengths (5, 10, 15, 20, 30, or a full 55-question paper).
     *   Features active timer tracking and official GATE marking rules ($+Marks$, and $-Marks/3$ for incorrect MCQs).
 *   **Offline PDF Generator:** Compile clean, subject-wise revision question books or single-question cards directly in your browser using client-side `jsPDF` integrations.
-*   **High-Scale Multi-Tier Cache Memory (100+ Users):** Integrated LRU Memory Cache Engine (`cache_manager.js`) and distributed Redis L4 API Layer (`server_cache_redis.js`) benchmarked for sub-10ms response times across 100+ simultaneous candidates. See [system_design_and_cache.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/system_design_and_cache.md) for full system design.
+*   **Multi-Tier Cache Memory & Optional API Engine:** Integrated LRU Memory Cache Engine (`cache_manager.js`) and Node.js backend server (`server_cache_redis.js`) featuring a true sliding-window rate limiter, optional `ioredis` TCP socket support, and a real 100-client HTTP socket benchmark (`scripts/benchmark_http.js`) delivering 981 QPS. See [system_design_and_cache.md](system_design_and_cache.md) for full system design.
 *   **Analysis Dashboard:** Provides insight into high-priority recurrence topics, identical concepts repeated across exam cycles, and year-by-year subject weight distributions.
 
 ---
@@ -30,26 +30,27 @@ A premium, offline-first educational platform designed to search, filter, practi
 *   **Logic:** Javascript (ES6+, client-side event loops, DOM-driven renderer)
 *   **Fonts:** *Plus Jakarta Sans* and *Fira Code* (for math/code blocks) from Google Fonts
 *   **PDF Libraries:** Local offline copies of `jsPDF` and `jsPDF-AutoTable`
+*   **Backend & Cache (Optional):** Pure Node.js HTTP server, `ioredis` fallback engine, sliding-window rate limiter
 
 ---
 
 ## 📋 Production Audit & Architecture Reports
 
-- [AUDIT.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/AUDIT.md) — Complete codebase inventory, dependency trace, and data risk assessment.
-- [ARCHITECTURE.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/ARCHITECTURE.md) — Multi-tier architecture, `countries.dev` design system tokens, and data flow.
-- [MIGRATION_MAP.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/MIGRATION_MAP.md) — Route hierarchy and file consolidation mapping.
-- [FEATURE_PARITY.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/FEATURE_PARITY.md) — Checklist of feature parity, PYQ metrics, and verification status.
-- [TEST_REPORT.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/TEST_REPORT.md) — Verification report for Python database validator & Node.js 100-user Redis benchmark.
-- [system_design_and_cache.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/system_design_and_cache.md) — System design & Redis cache memory capacity calculations.
+- [AUDIT.md](AUDIT.md) — Complete codebase inventory, dependency trace, and data risk assessment.
+- [ARCHITECTURE.md](ARCHITECTURE.md) — Multi-tier architecture, `countries.dev` design system tokens, and data flow.
+- [MIGRATION_MAP.md](MIGRATION_MAP.md) — Route hierarchy and file consolidation mapping.
+- [FEATURE_PARITY.md](FEATURE_PARITY.md) — Checklist of feature parity, PYQ metrics, and verification status.
+- [TEST_REPORT.md](TEST_REPORT.md) — Verification report for Python database validator & Node.js 100-user HTTP benchmark.
+- [system_design_and_cache.md](system_design_and_cache.md) — System design & Redis cache memory capacity calculations.
 
 ---
 
 ## 🚀 Quick Start
 
 1. Clone or download the project folder.
-2. Double-click [index.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/index.html) to launch the SaaS Landing Page.
-3. Click **"Explore PYQs"** to open the [pyqs.html](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/pyqs.html) workspace.
-4. *Note:* No internet connection, server configurations, or installation commands (`npm install`) are required to run the portal.
+2. Double-click [index.html](index.html) to launch the SaaS Landing Page.
+3. Click **"Explore PYQs"** to open the [pyqs.html](pyqs.html) workspace.
+4. *Note:* No internet connection, server configurations, or installation commands (`npm install`) are required to run the client portal.
 
 ---
 
@@ -60,16 +61,22 @@ GateGuide/
 ├── index.html                     # Main SaaS Landing Page & Product Overview
 ├── pyqs.html                      # Unified GATE DA PYQ Study & Practice Workspace
 ├── gate-cse-command-center.html   # Adaptive GATE CSE Personal Study Command Center
+├── docs.html                      # Interactive Technical Documentation & Live API Playground
 ├── styles.css                     # countries.dev unified design system & tokens
 ├── app.js                         # Application state engine, interactive logic, and PDF generator
 ├── user_saas_store.js             # SaaS zero-signup candidate profile & activity log engine
 ├── cache_manager.js               # Client-side LRU cache memory & telemetry manager
-├── server_cache_redis.js          # Distributed Redis API server & 100-user benchmark suite
+├── server_cache_redis.js          # Node.js API Server, sliding-window rate limiter & ioredis manager
 ├── database.js                    # Unified JSON questions database & Base64 asset store
 ├── jspdf.umd.min.js               # Local library code for PDF creation
 ├── jspdf.plugin.autotable.min.js  # Local library plugin for generating PDF grids
+├── validation_report.md           # Automated database validation audit report
+├── .github/
+│   └── workflows/
+│       └── ci.yml                 # GitHub Actions CI workflow (Validation, Syntax, HTTP Benchmark)
 ├── scripts/
-│   └── validate_database.py       # Automated database schema validation script
+│   ├── validate_database.py       # Automated database schema & Base64 PNG validator
+│   └── benchmark_http.js          # Real 100-client HTTP socket load benchmark harness
 └── images/
     └── q_202X_XX.png              # Fallback local PNG crops of exam questions
 ```
@@ -96,18 +103,21 @@ The platform indexes a total of **165 core questions** (Q11 to Q65) from the off
 
 ---
 
-## 🔧 Database Integrity Validation
+## 🔧 Database Integrity & CI Validation
 
-The database contents are verified using the Python validation script. To run the validation locally:
+The database contents and API server are verified using automated Python and Node.js validation scripts:
 
 ```bash
+# 1. Run Python Database Schema & Base64 PNG Validator
 python scripts/validate_database.py
+
+# 2. Run Real 100-Client HTTP Socket Concurrency Benchmark
+node scripts/benchmark_http.js
 ```
 
-The script checks for:
+The validation suite checks:
 *   Presence of all required question attributes (`id`, `subject`, `unit`, `topic`).
-*   Verification of question numbers (must be between 11 and 65).
-*   Correct option object structures for MCQs/MSQs.
-*   The existence of fallback local PNG image files.
-*   Successful matching and parsing of official answer strings.
-*   Completeness of subject categorization.
+*   Binary decoding of all 165 Base64 PNG image strings (`imageData`) verifying `\x89PNG` headers.
+*   Correct option object structures and answer key validation for MCQs/MSQs.
+*   Numeric, range (`X TO Y`), or official key formats for NATs.
+*   SHA-256 database hash generation (`validation_report.md`).
