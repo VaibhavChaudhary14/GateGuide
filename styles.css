@@ -1426,3 +1426,280 @@ footer {
     background: #334155;
 }
 
+/* =========================================================================
+   SAAS USER BADGE & PROFILE MODAL STYLING
+   ========================================================================= */
+
+.saas-user-badge-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    border-radius: 30px;
+    padding: 6px 14px 6px 6px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.saas-user-badge-inner:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(91, 91, 214, 0.4);
+}
+
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-gold));
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(91, 91, 214, 0.3);
+}
+
+.user-meta {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.user-streak {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Modal Overlay */
+.saas-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 7, 13, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.saas-modal-card {
+    background: #0d1527;
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.modal-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.modal-close-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-summary-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-identity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.profile-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-gold));
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-badge-pill {
+    padding: 6px 14px;
+    background: rgba(217, 164, 65, 0.15);
+    border: 1px solid rgba(217, 164, 65, 0.3);
+    color: var(--accent-gold);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.stats-counter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+}
+
+.stat-val {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.stat-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.profile-edit-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.profile-edit-section h4 {
+    font-size: 13px;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+.edit-inputs-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.edit-inputs-row input,
+.edit-inputs-row select {
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    flex: 1;
+    min-width: 130px;
+}
+
+.activity-timeline-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timeline-container {
+    max-height: 240px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 6px;
+}
+
+.log-timeline-item {
+    display: flex;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    align-items: flex-start;
+}
+
+.log-badge {
+    font-size: 1.1rem;
+}
+
+.log-content {
+    flex: 1;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.log-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.log-time {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.log-details {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+

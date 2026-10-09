@@ -34,6 +34,9 @@ function initApp() {
     renderContent();
     renderDashboard();
     renderSimulator();
+    if (window.gateSaaSStore) {
+        window.gateSaaSStore.notifyUI();
+    }
 }
 
 // -------------------------------------------------------------
@@ -621,6 +624,17 @@ function saveMsqAnswer(qId, val) {
 
 function submitAnswer(qId) {
     submittedAnswers[qId] = true;
+    const q = QUESTIONS_DATABASE.find(item => item.id === qId);
+    if (q && window.gateSaaSStore) {
+        const isCorrect = validateAnswer(q, userAnswers[qId]);
+        window.gateSaaSStore.logActivity(
+            "QUESTION_ATTEMPT",
+            `Attempted Question ${q.questionNumber} (${q.year})`,
+            `Subject: ${q.subject} | Result: ${isCorrect ? "✅ Correct" : "❌ Incorrect"}`,
+            isCorrect ? "✅ Correct" : "❌ Incorrect",
+            { qId, isCorrect }
+        );
+    }
     renderContent();
 }
 

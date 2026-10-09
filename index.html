@@ -26,8 +26,12 @@
             </div>
             <!-- Test Toggle -->
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <div id="saas-user-badge"></div>
+                <a href="landing.html" class="btn btn-secondary" style="font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    🏠 Landing Page
+                </a>
                 <a href="gate-cse-command-center.html" target="_blank" class="btn btn-secondary" style="font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                    ⚡ Open Adaptive CSE Command Center ↗
+                    ⚡ CSE Command Center ↗
                 </a>
                 <button class="btn btn-warning" id="btn-global-test-mode" onclick="toggleGlobalTestMode()">
                      Practice Test Mode
@@ -72,6 +76,7 @@
 
     <!-- Client-side Scripts -->
     <script src="cache_manager.js"></script>
+    <script src="user_saas_store.js"></script>
     <script src="database.js"></script>
     <script src="app.js"></script>
 </body>
