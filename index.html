@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gateguide.dev — Free GATE Data Science, AI & CSE Exam Platform</title>
+    <title>gateguide.dev — GATE Data Science, AI & CSE Exam Engine</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="gateguide.dev is a free, open academic platform for GATE Data Science, AI and CSE preparation — official PYQs, base64 cropped PNGs, practice exam simulator, AI explanations, and offline PDF compiler. No signup, no paywall, sub-10ms cache engine.">
-    <meta name="keywords" content="gateguide.dev, GATE DA, GATE CSE, Data Science, Artificial Intelligence, PYQ, GATE 2024, GATE 2025, GATE 2026, GATE 2027, Free SaaS, Exam Simulator">
+    <meta name="description" content="gateguide.dev is a free, open academic platform for GATE Data Science, AI and CSE preparation — official PYQs, base64 cropped PNGs, practice exam simulator, CSE Command Center planner, AI explanations, and offline PDF compiler.">
+    <meta name="keywords" content="gateguide.dev, GATE DA, GATE CSE, Data Science, Artificial Intelligence, PYQ, GATE 2024, GATE 2025, GATE 2026, GATE 2027, Free SaaS, Exam Simulator, Study Planner">
     
     <!-- Google Fonts (Plus Jakarta Sans & Fira Code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(10, 10, 12, 0.8);
+            background: rgba(10, 10, 12, 0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--card-border);
             height: 60px;
@@ -41,7 +41,7 @@
         }
 
         .countries-nav .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             margin: 0 auto;
             padding: 0 20px;
@@ -85,7 +85,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
             list-style: none;
         }
 
@@ -97,7 +97,7 @@
             transition: color var(--transition-fast);
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             color: #ffffff;
         }
 
@@ -105,7 +105,7 @@
         .hero-grid-bg {
             position: absolute;
             inset: 0;
-            height: 500px;
+            height: 550px;
             pointer-events: none;
             z-index: 0;
             background: 
@@ -119,9 +119,9 @@
         .hero-wrapper {
             position: relative;
             z-index: 10;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 70px 20px 50px;
+            padding: 50px 20px 30px;
             text-align: center;
         }
 
@@ -130,7 +130,7 @@
             background: #0e121b;
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 60px 30px 40px;
+            padding: 50px 30px 35px;
             box-shadow: var(--shadow-lg);
         }
 
@@ -153,20 +153,20 @@
         }
 
         .hero-heading {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 800;
             line-height: 1.15;
             letter-spacing: -0.03em;
             color: #ffffff;
-            max-width: 820px;
-            margin: 0 auto 20px;
+            max-width: 860px;
+            margin: 0 auto 16px;
         }
 
         .hero-subtext {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
-            max-width: 780px;
-            margin: 0 auto 30px;
+            max-width: 820px;
+            margin: 0 auto 26px;
             line-height: 1.6;
         }
 
@@ -175,172 +175,289 @@
             font-weight: 600;
         }
 
-        /* Live Search Trigger Input Bar */
-        .hero-search-wrapper {
-            max-width: 620px;
-            margin: 0 auto 30px;
-        }
-
-        /* Quick Stat Pill Bar */
-        .quick-metrics-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 32px;
-            flex-wrap: wrap;
-            padding-top: 30px;
-            border-top: 1px solid var(--card-border);
-            margin-top: 30px;
-        }
-
-        .metric-unit {
-            text-align: center;
-        }
-        .metric-unit .val {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #ffffff;
-            font-family: var(--font-mono);
-        }
-        .metric-unit .lbl {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Section Headings */
-        .section-header {
-            text-align: center;
-            padding: 50px 20px 30px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .section-header h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: #ffffff;
-        }
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 8px;
-        }
-
-        /* countries.dev Crisp 1px Grid Cards */
-        .countries-grid-section {
-            max-width: 1100px;
-            margin: 0 auto 70px;
-            padding: 0 20px;
-        }
-
-        .grid-card-item {
-            padding: 28px 24px;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* Live Search Bar & Popup Container */
+        .hero-search-container {
+            max-width: 680px;
+            margin: 0 auto 20px;
             position: relative;
         }
 
-        .grid-card-header {
+        .search-results-popover {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 8px;
+            background: #0e121b;
+            border: 1px solid var(--card-border-hover);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            z-index: 1000;
+            max-height: 480px;
+            overflow-y: auto;
+            text-align: left;
+            padding: 12px;
+            display: none;
+        }
+
+        .search-results-popover.active {
+            display: block;
+        }
+
+        .search-result-card {
+            background: rgba(18, 24, 38, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-bottom: 10px;
+            transition: all var(--transition-fast);
+        }
+
+        .search-result-card:hover {
+            border-color: var(--accent-blue-light);
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .search-result-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .search-result-title {
+            font-size: 14px;
+            font-weight: 700;
             color: #ffffff;
         }
 
-        .grid-card-header .icon {
-            font-size: 1.3rem;
-        }
-
-        .arrow-up-icon {
-            margin-left: auto;
-            width: 16px;
-            height: 16px;
-            color: var(--text-muted);
-            opacity: 0;
-            transform: translateX(-4px);
-            transition: all var(--transition-normal);
-        }
-
-        .grid-card-item:hover .arrow-up-icon {
-            opacity: 1;
-            transform: translateX(0);
-            color: var(--accent-blue-light);
-        }
-
-        .grid-card-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.55;
-        }
-
-        /* Syllabus Atlas Accordion List */
-        .atlas-accordion-wrapper {
-            max-width: 1100px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-        }
-
-        .atlas-group {
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .atlas-summary {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 20px;
-            cursor: pointer;
-            list-style: none;
-            transition: background var(--transition-fast);
-        }
-
-        .atlas-summary:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .atlas-summary h3 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .atlas-count {
+        .search-result-meta {
             font-size: 12px;
-            font-family: var(--font-mono);
             color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2px 8px;
-            border-radius: var(--radius-full);
+            margin-bottom: 8px;
         }
 
-        .atlas-topics-list {
-            padding: 0 20px 20px 48px;
+        .search-img-preview {
+            max-height: 140px;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+            background: #ffffff;
+            padding: 4px;
+            margin-bottom: 8px;
+        }
+
+        /* Quick Topic Chips */
+        .quick-topic-chips {
             display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
             flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 24px;
         }
 
-        .atlas-topic-chip {
+        .topic-pill-chip {
             font-size: 12px;
             color: var(--text-secondary);
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--card-border);
-            padding: 4px 12px;
+            padding: 5px 12px;
             border-radius: var(--radius-full);
-            text-decoration: none;
+            cursor: pointer;
             transition: all var(--transition-fast);
         }
 
-        .atlas-topic-chip:hover {
+        .topic-pill-chip:hover {
             color: #ffffff;
             border-color: var(--accent-blue-light);
-            background: rgba(56, 189, 248, 0.1);
+            background: rgba(56, 189, 248, 0.12);
+        }
+
+        /* View Mode Switcher Tabs */
+        .view-switcher-bar {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .view-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-tab-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .view-tab-btn.active {
+            color: var(--accent-blue-light);
+            border-bottom-color: var(--accent-blue-light);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* Sections Container */
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* Embedded Command Center Styles */
+        .command-center-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-card {
+            background: #0e121b;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            transition: var(--transition-fast);
+        }
+
+        .kpi-card:hover {
+            border-color: var(--card-border-hover);
+        }
+
+        .kpi-card .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .kpi-card .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .panel {
+            background: #0e121b;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Command Center Sub-Nav Tabs */
+        .cc-nav-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .cc-tab-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+        }
+
+        .cc-tab-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .cc-tab-btn.active {
+            color: #ffffff;
+            background: var(--accent-blue);
+            border-color: var(--accent-blue-light);
+        }
+
+        .cc-tab-content {
+            display: none;
+        }
+
+        .cc-tab-content.active {
+            display: block;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1.6fr 1.4fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+        @media (max-width: 900px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* Matrix Table */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: center;
+        }
+        .matrix-table th, .matrix-table td {
+            padding: 8px 4px;
+            border: 1px solid var(--card-border);
+        }
+        .matrix-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+        .matrix-cell {
+            cursor: pointer;
+            font-weight: 700;
+            transition: transform 0.15s;
+        }
+        .matrix-cell:hover {
+            transform: scale(1.15);
+            outline: 2px solid var(--accent-blue-light);
         }
     </style>
 </head>
@@ -358,8 +475,9 @@
             </a>
 
             <ul class="nav-links">
-                <li><a href="pyqs.html">PYQs</a></li>
-                <li><a href="gate-cse-command-center.html">CSE Planner</a></li>
+                <li><a href="#overview" class="active" onclick="switchMainView('overview')">Overview</a></li>
+                <li><a href="#planner" onclick="switchMainView('planner')">CSE Command Center</a></li>
+                <li><a href="pyqs.html">PYQ Workspace</a></li>
                 <li><a href="docs.html">Docs</a></li>
             </ul>
 
@@ -383,23 +501,39 @@
             <h1 class="hero-heading">The free GATE Data Science, AI & CSE platform for developers</h1>
             
             <p class="hero-subtext">
-                <b>gateguide.dev</b> is a free REST & interactive platform for <b>165+ GATE DA & CSE PYQs</b> — official questions, base64 cropped PNG assets, practice mode, NAT numerical range validators — plus <b>mock exam simulator</b>, <b>AI solutions</b>, and <b>offline PDF books</b>. No API key, no paywall, sub-10ms cache memory.
+                <b>gateguide.dev</b> is a free REST & interactive platform for <b>165+ GATE DA & CSE PYQs</b> — official questions, base64 cropped PNG assets, practice mode, NAT numerical range validators — plus <b>adaptive CSE study planner</b>, <b>AI solutions</b>, and <b>offline PDF books</b>. No API key, no paywall, sub-10ms cache memory.
             </p>
 
-            <!-- Search Bar Input Pill with KBD Shortcut -->
-            <div class="hero-search-wrapper">
-                <form id="hero-search-form" onsubmit="handleLandingSearch(event)" class="countries-search-bar" style="cursor: text;">
+            <!-- Search Bar Input Pill with Instant Popover Drawer -->
+            <div class="hero-search-container">
+                <form id="hero-search-form" onsubmit="handleLandingSearch(event)" class="countries-search-bar">
                     <span style="color: var(--text-muted); font-size: 15px;">🔍</span>
-                    <input type="text" id="hero-search-input" placeholder="Search a question, subject or topic — try “Bayes Theorem” or “Q58”">
+                    <input type="text" id="hero-search-input" oninput="handleSearchInput(event)" placeholder="Search any topic, subject or question — try “Bayes Theorem”, “Trees”, “Q58”, or “DBMS”" autocomplete="off">
                     <button type="submit" style="background: transparent; border: none; cursor: pointer; display: flex; align-items: center;">
                         <kbd>⌘K</kbd>
                     </button>
                 </form>
+
+                <!-- Live Search Results Dropdown -->
+                <div id="search-results-popover" class="search-results-popover">
+                    <div id="search-popover-content"></div>
+                </div>
+            </div>
+
+            <!-- Quick Topic Chips -->
+            <div class="quick-topic-chips">
+                <span class="topic-pill-chip" onclick="quickSearchTopic('Bayes Theorem')">🎲 Bayes Theorem</span>
+                <span class="topic-pill-chip" onclick="quickSearchTopic('Binary Tree')">💻 Binary Trees</span>
+                <span class="topic-pill-chip" onclick="quickSearchTopic('Rank-One SVD')">📐 Linear Algebra SVD</span>
+                <span class="topic-pill-chip" onclick="quickSearchTopic('DBMS')">🗄️ SQL & Normalization</span>
+                <span class="topic-pill-chip" onclick="quickSearchTopic('Exponential Distribution')">📊 Exponential Distribution</span>
+                <span class="topic-pill-chip" onclick="quickSearchTopic('Q58')">🎯 Q58 (2024 / 2026)</span>
             </div>
 
             <!-- Action Pill Buttons -->
             <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-                <a href="pyqs.html" class="btn-pill btn-pill-primary">Explore the PYQ data</a>
+                <a href="pyqs.html" class="btn-pill btn-pill-primary">Explore 165+ Question Database</a>
+                <button class="btn-pill btn-pill-secondary" onclick="switchMainView('planner')">⚡ Launch CSE Study Planner</button>
                 <button class="btn-pill btn-pill-secondary" onclick="window.gateSaaSStore.openProfileModal()">👤 Candidate Profile & Logs</button>
             </div>
 
@@ -425,163 +559,401 @@
         </div>
     </main>
 
-    <!-- One Platform Section -->
-    <div class="section-header">
-        <p class="category-eyebrow">Unified Engine</p>
-        <h2>All your GATE preparation tools in one place</h2>
-        <p>Questions, syllabus units, mock exam scoring, NAT precision checkers, and activity logs — clean JSON & DOM, free without a key.</p>
+    <!-- Main View Switcher Bar -->
+    <div class="view-switcher-bar">
+        <button class="view-tab-btn active" id="tab-btn-overview" onclick="switchMainView('overview')">
+            🎯 Overview & Matrix
+        </button>
+        <button class="view-tab-btn" id="tab-btn-planner" onclick="switchMainView('planner')">
+            ⚡ GATE CSE Command Center Planner
+        </button>
+        <button class="view-tab-btn" id="tab-btn-explorer" onclick="switchMainView('explorer')">
+            🔍 Live Question Explorer (<span id="explorer-match-count">165</span>)
+        </button>
     </div>
 
-    <!-- countries.dev 3-Column Grid Container -->
-    <section class="countries-grid-section">
-        <div class="grid-border-container" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
-            <a href="pyqs.html" class="grid-card-item">
-                <div class="grid-card-header">
-                    <span class="icon">🎯</span>
-                    <span>Syllabus PYQ Matrix</span>
-                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </div>
-                <p class="grid-card-desc">ISO-like syllabus categorization across Probability, ML, AI, Linear Algebra, DBMS, Algorithms, and Calculus.</p>
-            </a>
+    <!-- VIEW 1: OVERVIEW & MATRIX -->
+    <section id="view-overview" class="view-section active">
+        <!-- One Platform Section -->
+        <div class="section-header">
+            <p class="category-eyebrow">Unified Engine</p>
+            <h2>All your GATE preparation tools in one place</h2>
+            <p>Questions, syllabus units, mock exam scoring, NAT precision checkers, and activity logs — clean JSON & DOM, free without a key.</p>
+        </div>
 
-            <a href="pyqs.html" class="grid-card-item">
-                <div class="grid-card-header">
-                    <span class="icon">🖼️</span>
-                    <span>High-Fidelity Formulas</span>
-                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </div>
-                <p class="grid-card-desc">Base64 inlined PNG crops direct from official GATE papers — zero LaTeX font corruption or missing diagram errors.</p>
-            </a>
+        <!-- countries.dev 3-Column Grid Container -->
+        <section class="countries-grid-section">
+            <div class="grid-border-container" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                <a href="pyqs.html" class="grid-card-item">
+                    <div class="grid-card-header">
+                        <span class="icon">🎯</span>
+                        <span>Syllabus PYQ Matrix</span>
+                        <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                    <p class="grid-card-desc">ISO-like syllabus categorization across Probability, ML, AI, Linear Algebra, DBMS, Algorithms, and Calculus.</p>
+                </a>
 
-            <a href="pyqs.html" class="grid-card-item">
-                <div class="grid-card-header">
-                    <span class="icon">⏱️</span>
-                    <span>GATE Exam Simulator</span>
-                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </div>
-                <p class="grid-card-desc">Interactive test engine supporting MCQs (-1/3 mark penalty), MSQs, and NAT numerical tolerance range validation.</p>
-            </a>
+                <a href="javascript:void(0)" onclick="switchMainView('planner')" class="grid-card-item">
+                    <div class="grid-card-header">
+                        <span class="icon">⚡</span>
+                        <span>CSE Adaptive Command Center</span>
+                        <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                    <p class="grid-card-desc">Auto-pair recommendation engine, tonight's decision engine, mastery sliders, and pair synergy matrix.</p>
+                </a>
 
-            <a href="pyqs.html" class="grid-card-item">
-                <div class="grid-card-header">
-                    <span class="icon">🧠</span>
-                    <span>AI Solutions & Step-by-Step</span>
-                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </div>
-                <p class="grid-card-desc">Detailed mathematical derivations and conceptual explanations available instantly beneath every problem.</p>
-            </a>
+                <a href="pyqs.html" class="grid-card-item">
+                    <div class="grid-card-header">
+                        <span class="icon">🖼️</span>
+                        <span>High-Fidelity Formulas</span>
+                        <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                    <p class="grid-card-desc">Base64 inlined PNG crops direct from official GATE papers — zero LaTeX font corruption or missing diagram errors.</p>
+                </a>
 
-            <a href="pyqs.html" class="grid-card-item">
-                <div class="grid-card-header">
-                    <span class="icon">📄</span>
-                    <span>Offline PDF Book Compiler</span>
-                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </div>
-                <p class="grid-card-desc">Export subject-wise revision question books or single-question cards directly in browser using client-side jsPDF.</p>
-            </a>
+                <a href="pyqs.html" class="grid-card-item">
+                    <div class="grid-card-header">
+                        <span class="icon">⏱️</span>
+                        <span>GATE Exam Simulator</span>
+                        <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                    <p class="grid-card-desc">Interactive test engine supporting MCQs (-1/3 mark penalty), MSQs, and NAT numerical tolerance range validation.</p>
+                </a>
 
-            <a href="pyqs.html" class="grid-card-item">
-                <div class="grid-card-header">
-                    <span class="icon">⚡</span>
-                    <span>Redis L4 Cache Architecture</span>
-                    <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                <a href="pyqs.html" class="grid-card-item">
+                    <div class="grid-card-header">
+                        <span class="icon">🧠</span>
+                        <span>AI Solutions & Step-by-Step</span>
+                        <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                    <p class="grid-card-desc">Detailed mathematical derivations and conceptual explanations available instantly beneath every problem.</p>
+                </a>
+
+                <a href="pyqs.html" class="grid-card-item">
+                    <div class="grid-card-header">
+                        <span class="icon">📄</span>
+                        <span>Offline PDF Book Compiler</span>
+                        <svg class="arrow-up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                    <p class="grid-card-desc">Export subject-wise revision question books or single-question cards directly in browser using client-side jsPDF.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Syllabus Atlas Accordion Section -->
+        <div class="section-header">
+            <p class="category-eyebrow">Syllabus Atlas</p>
+            <h2>Browse questions by subject area</h2>
+            <p>Explore all 7 core subjects and 165 official paper questions. Click any topic to jump directly to its practice bank.</p>
+        </div>
+
+        <section class="atlas-accordion-wrapper">
+            <div style="border: 1px solid var(--card-border); border-radius: var(--radius-lg); overflow: hidden; background: #0e121b;">
+                <details class="atlas-group" open>
+                    <summary class="atlas-summary">
+                        <span>🎲</span>
+                        <h3>Probability & Statistics</h3>
+                        <span class="atlas-count">36 Questions</span>
+                    </summary>
+                    <div class="atlas-topics-list">
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Bayes Theorem')">Bayes Theorem (Q58)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Exponential Distribution')">Exponential Distribution (Q57)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Uniform Distribution')">Uniform Distribution (Q56)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Mean, Variance & Covariance')">Mean, Variance & Covariance</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Conditional Probability')">Conditional Probability</span>
+                    </div>
+                </details>
+
+                <details class="atlas-group">
+                    <summary class="atlas-summary">
+                        <span>💻</span>
+                        <h3>Programming, Data Structures & Algorithms</h3>
+                        <span class="atlas-count">33 Questions</span>
+                    </summary>
+                    <div class="atlas-topics-list">
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Binary Tree')">Binary Tree Properties (Q52)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Sorting')">Sorting & Searching Complexity</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Dynamic Programming')">Dynamic Programming</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Graph')">Graph Traversals (BFS/DFS)</span>
+                    </div>
+                </details>
+
+                <details class="atlas-group">
+                    <summary class="atlas-summary">
+                        <span>🤖</span>
+                        <h3>Machine Learning</h3>
+                        <span class="atlas-count">28 Questions</span>
+                    </summary>
+                    <div class="atlas-topics-list">
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Regression')">Linear & Logistic Regression</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Decision Tree')">Decision Trees & Random Forests</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Clustering')">K-Means Clustering & PCA</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Neural Networks')">Neural Networks & Loss Functions</span>
+                    </div>
+                </details>
+
+                <details class="atlas-group">
+                    <summary class="atlas-summary">
+                        <span>🗄️</span>
+                        <h3>Database Management & Warehousing</h3>
+                        <span class="atlas-count">21 Questions</span>
+                    </summary>
+                    <div class="atlas-topics-list">
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Relational Algebra')">Relational Algebra & SQL</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Normal Forms')">Normal Forms (1NF, 2NF, 3NF, BCNF)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('B+ Trees')">B+ Trees & Indexing</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('ER Diagrams')">ER Diagrams & Data Warehousing</span>
+                    </div>
+                </details>
+
+                <details class="atlas-group">
+                    <summary class="atlas-summary">
+                        <span>📐</span>
+                        <h3>Linear Algebra</h3>
+                        <span class="atlas-count">18 Questions</span>
+                    </summary>
+                    <div class="atlas-topics-list">
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('SVD')">Rank-One SVD (Q61)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Eigenvalues')">Eigenvalues & Eigenvectors</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Matrix')">Matrix Decomposition (LU/QR)</span>
+                        <span class="atlas-topic-chip" onclick="quickSearchTopic('Vector Spaces')">Vector Spaces & Basis</span>
+                    </div>
+                </details>
+            </div>
+        </section>
+    </section>
+
+    <!-- VIEW 2: MERGED GATE CSE COMMAND CENTER PLANNER -->
+    <section id="view-planner" class="view-section">
+        <div class="command-center-container">
+            <!-- Header Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+                <div>
+                    <h1 style="font-size: 1.6rem; font-weight: 800; color: #fff;">GATE CSE 2027 Command Center</h1>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Adaptive Coaching-Aware Planner & Tonight Decision Engine</p>
                 </div>
-                <p class="grid-card-desc">Multi-tier memory architecture benchmarked for 100+ concurrent aspirants at 35,000 QPS with sub-10ms response time.</p>
-            </a>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="badge badge-purple" style="padding: 6px 12px; font-size: 12px;">Target: AIR &lt; 500</span>
+                    <span class="badge badge-cyan" id="projected-score-badge" style="padding: 6px 12px; font-size: 12px;">Estimated Mastery: 15.0 / 100</span>
+                    <button class="btn-pill btn-pill-secondary" onclick="exportCSEData()">💾 Export JSON</button>
+                    <button class="btn-pill btn-pill-secondary" onclick="importCSEDataPrompt()">📂 Import JSON</button>
+                </div>
+            </div>
+
+            <!-- KPI Row -->
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="label">Simulated Day</div>
+                    <div class="value" id="kpi-sim-day">Day 0</div>
+                    <div style="font-size: 12px; color: var(--accent-teal); margin-top: 2px;" id="kpi-total-hours">Total Study: 0.0 hrs</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Projected Rank</div>
+                    <div class="value" id="kpi-projected-rank" style="font-size: 1.25rem; color: var(--accent-blue-light);">Unranked</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Based on GATE 15-Yr Weights</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Active Coaching Subject</div>
+                    <div class="value" id="kpi-coaching-subj" style="font-size: 1.2rem; color: var(--accent-indigo);">PDS</div>
+                    <div style="font-size: 12px; color: var(--text-muted);" id="kpi-upcoming-subj">Next: Digital Logic</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Active Companion Pair</div>
+                    <div class="value" id="kpi-active-pair" style="font-size: 1.15rem; color: var(--accent-teal);">PDS + Digital Logic</div>
+                    <div style="font-size: 12px; color: var(--text-muted);" id="kpi-pair-score">Pair Synergy: 90 / 100</div>
+                </div>
+            </div>
+
+            <!-- Mode Controls Bar -->
+            <div class="panel" style="padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">Special Modes:</span>
+                    <button class="btn-pill btn-pill-secondary" id="btn-low-energy" onclick="toggleLowEnergyMode()">⚡ Low Energy Day Mode</button>
+                    <button class="btn-pill btn-pill-secondary" id="btn-backlog" onclick="toggleBacklogMode()">🚨 Backlog Recovery Mode</button>
+                </div>
+                <div style="font-size: 13px; color: var(--text-muted);">
+                    Coaching vs Self-Study Balance: <strong id="balance-ratio" style="color: var(--accent-blue-light);">1 : 1.5 (Optimal)</strong>
+                </div>
+            </div>
+
+            <!-- Command Center Navigation Tabs -->
+            <div class="cc-nav-tabs">
+                <button class="cc-tab-btn active" onclick="switchCCTab('tab-autopair')">⚡ Auto-Pair Engine</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-weekly')">🌙 Tonight's Decision Engine & Weekly</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-mastery')">🗺️ Mastery & Roadmap</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-matrix')">📐 Pair-Score Matrix</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-dep')">🔗 Dependency Graph</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-spaced')">🧠 Spaced Revision</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-errors')">📕 Error Log System</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-coaching')">📝 Coaching Logger</button>
+                <button class="cc-tab-btn" onclick="switchCCTab('tab-radar')">📊 PYQ Topic Radar</button>
+            </div>
+
+            <!-- CC TAB 1: Auto-Pair Engine -->
+            <div id="tab-autopair" class="cc-tab-content active">
+                <div class="grid-2">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>⚡ Adaptive Auto-Pair Recommendation Engine</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+                            <div>
+                                <label style="font-size: 12px; color: var(--text-muted);">Current Coaching Subject</label>
+                                <select id="select-coaching-subj" onchange="updateCoachingSubject(this.value)" class="countries-search-bar" style="width: 100%; border-radius: 8px; font-size: 13px; margin-top: 4px; padding: 8px 12px; background: #070b14; color: #fff;"></select>
+                            </div>
+                            <div>
+                                <label style="font-size: 12px; color: var(--text-muted);">Upcoming Coaching Subject</label>
+                                <select id="select-upcoming-subj" onchange="updateUpcomingSubject(this.value)" class="countries-search-bar" style="width: 100%; border-radius: 8px; font-size: 13px; margin-top: 4px; padding: 8px 12px; background: #070b14; color: #fff;"></select>
+                            </div>
+                        </div>
+                        <div id="pair-recommendations-container" style="display: flex; flex-direction: column; gap: 14px;"></div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>🧠 Pair Synergy Rationale</h2>
+                        </div>
+                        <div id="pair-rationale-box" style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                            Select a coaching subject to view mathematical synergy, cognitive load balance, and PYQ overlap.
+                        </div>
+                        <div class="panel-header">
+                            <h2>💡 Daily 330-Min (5.5h) Self-Study Architecture</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+                            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--accent-indigo); font-weight: 700;">45 Mins</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #fff;">Primary Concepts</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--accent-indigo); font-weight: 700;">120 Mins</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #fff;">Workbook Solving</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--accent-indigo); font-weight: 700;">105 Mins</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #fff;">Secondary Pair Revision</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--accent-indigo); font-weight: 700;">45 Mins</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #fff;">Pure PYQ Drills</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CC TAB 2: Tonight's Decision Engine -->
+            <div id="tab-weekly" class="cc-tab-content">
+                <div class="panel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+                        <div>
+                            <h2 style="font-size: 1.2rem; font-weight: 800; color: #fff;">🌙 "What Should I Study Tonight?" Decision Engine</h2>
+                            <p style="font-size: 13px; color: var(--text-secondary);">Dynamically constructs tonight's task blocks with topic intelligence.</p>
+                        </div>
+                        <button class="btn-pill btn-pill-primary" onclick="generateTonightPlan()">✨ Generate Tonight's Plan</button>
+                    </div>
+
+                    <div id="tonight-tasks-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;"></div>
+                </div>
+            </div>
+
+            <!-- CC TAB 3: Mastery Sliders & Roadmap -->
+            <div id="tab-mastery" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>🎛️ Subject Mastery Sliders (0 - 100%)</h2>
+                    </div>
+                    <div class="grid-3" id="mastery-sliders-container"></div>
+                </div>
+            </div>
+
+            <!-- CC TAB 4: Pair Matrix -->
+            <div id="tab-matrix" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>📐 Interactive Pair-Synergy Matrix</h2>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="matrix-table" id="matrix-table-el"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CC TAB 5: Dependency Graph -->
+            <div id="tab-dep" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>🔗 Academic Dependency Chains</h2>
+                    </div>
+                    <div id="dependency-graph-container" style="display: flex; flex-direction: column; gap: 16px;"></div>
+                </div>
+            </div>
+
+            <!-- CC TAB 6: Spaced Revision -->
+            <div id="tab-spaced" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>🧠 Spaced Revision Queue</h2>
+                        <button class="btn-pill btn-pill-secondary" onclick="addSpacedRevisionPrompt()">➕ Add Revision Entry</button>
+                    </div>
+                    <div class="grid-3" id="spaced-revision-container"></div>
+                </div>
+            </div>
+
+            <!-- CC TAB 7: Error Log -->
+            <div id="tab-errors" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>📕 Logged Error & Mistake History</h2>
+                    </div>
+                    <div id="error-log-container"></div>
+                </div>
+            </div>
+
+            <!-- CC TAB 8: Coaching Logger -->
+            <div id="tab-coaching" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>📝 Daily Coaching Timetable Logger</h2>
+                    </div>
+                    <div id="coaching-log-container"></div>
+                </div>
+            </div>
+
+            <!-- CC TAB 9: PYQ Radar -->
+            <div id="tab-radar" class="cc-tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>📊 Top PYQ Recurrence Radar</h2>
+                    </div>
+                    <div id="radar-list-container"></div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Syllabus Atlas Accordion Section -->
-    <div class="section-header">
-        <p class="category-eyebrow">Syllabus Atlas</p>
-        <h2>Browse questions by subject area</h2>
-        <p>Explore all 7 core subjects and 165 official paper questions. Click any topic to jump directly to its practice bank.</p>
-    </div>
+    <!-- VIEW 3: LIVE QUESTION EXPLORER & INSTANT TOPIC MATCHES -->
+    <section id="view-explorer" class="view-section">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px 60px;">
+            <div class="section-header" style="padding-top: 10px;">
+                <p class="category-eyebrow">Interactive Practice Bank</p>
+                <h2 id="explorer-title">Live Question Results</h2>
+                <p id="explorer-subtitle">Browsing 165 official GATE Data Science & AI questions. Filter by topic or search keyword above.</p>
+            </div>
 
-    <section class="atlas-accordion-wrapper">
-        <div style="border: 1px solid var(--card-border); border-radius: var(--radius-lg); overflow: hidden; background: #0e121b;">
-            <details class="atlas-group" open>
-                <summary class="atlas-summary">
-                    <span>🎲</span>
-                    <h3>Probability & Statistics</h3>
-                    <span class="atlas-count">36 Questions</span>
-                </summary>
-                <div class="atlas-topics-list">
-                    <a href="pyqs.html" class="atlas-topic-chip">Bayes Theorem (Q58)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Exponential Distribution (Q57)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Uniform Distribution (Q56)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Mean, Variance & Covariance</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Conditional Probability</a>
-                </div>
-            </details>
-
-            <details class="atlas-group">
-                <summary class="atlas-summary">
-                    <span>💻</span>
-                    <h3>Programming, Data Structures & Algorithms</h3>
-                    <span class="atlas-count">33 Questions</span>
-                </summary>
-                <div class="atlas-topics-list">
-                    <a href="pyqs.html" class="atlas-topic-chip">Binary Tree Properties (Q52)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Sorting & Searching Complexity</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Dynamic Programming</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Graph Traversals (BFS/DFS)</a>
-                </div>
-            </details>
-
-            <details class="atlas-group">
-                <summary class="atlas-summary">
-                    <span>🤖</span>
-                    <h3>Machine Learning</h3>
-                    <span class="atlas-count">28 Questions</span>
-                </summary>
-                <div class="atlas-topics-list">
-                    <a href="pyqs.html" class="atlas-topic-chip">Linear & Logistic Regression</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Decision Trees & Random Forests</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">K-Means Clustering & PCA</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Neural Networks & Loss Functions</a>
-                </div>
-            </details>
-
-            <details class="atlas-group">
-                <summary class="atlas-summary">
-                    <span>🗄️</span>
-                    <h3>Database Management & Warehousing</h3>
-                    <span class="atlas-count">21 Questions</span>
-                </summary>
-                <div class="atlas-topics-list">
-                    <a href="pyqs.html" class="atlas-topic-chip">Relational Algebra & SQL</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Normal Forms (1NF, 2NF, 3NF, BCNF)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">B+ Trees & Indexing</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">ER Diagrams & Data Warehousing</a>
-                </div>
-            </details>
-
-            <details class="atlas-group">
-                <summary class="atlas-summary">
-                    <span>📐</span>
-                    <h3>Linear Algebra</h3>
-                    <span class="atlas-count">18 Questions</span>
-                </summary>
-                <div class="atlas-topics-list">
-                    <a href="pyqs.html" class="atlas-topic-chip">Rank-One SVD (Q61)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Eigenvalues & Eigenvectors</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Matrix Decomposition (LU/QR)</a>
-                    <a href="pyqs.html" class="atlas-topic-chip">Vector Spaces & Basis</a>
-                </div>
-            </details>
+            <div id="explorer-cards-grid" style="display: flex; flex-direction: column; gap: 20px;"></div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer style="border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px;">
-        <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div>
                 <span style="font-weight: 700; color: #fff;">gateguide.dev</span> — Free GATE Data Science, AI & CSE Exam Engine
             </div>
             <div style="display: flex; gap: 20px;">
+                <a href="javascript:void(0)" onclick="switchMainView('overview')" style="color: var(--text-secondary); text-decoration: none;">Overview</a>
+                <a href="javascript:void(0)" onclick="switchMainView('planner')" style="color: var(--text-secondary); text-decoration: none;">CSE Planner</a>
                 <a href="pyqs.html" style="color: var(--text-secondary); text-decoration: none;">PYQs</a>
-                <a href="gate-cse-command-center.html" style="color: var(--text-secondary); text-decoration: none;">CSE Planner</a>
                 <a href="docs.html" style="color: var(--text-secondary); text-decoration: none;">Docs</a>
             </div>
         </div>
@@ -590,35 +962,484 @@
     <!-- Client-side Scripts -->
     <script src="cache_manager.js"></script>
     <script src="user_saas_store.js"></script>
+    <script src="database.js"></script>
+
     <script>
+        // -------------------------------------------------------------
+        // CSE COMMAND CENTER STATE & DATA STRUCTURES
+        // -------------------------------------------------------------
+        const SUBJECTS = [
+            { id: "PDS", name: "PDS (Programming & Data Structures)", weight: 10.5, difficulty: "Medium" },
+            { id: "Digital Logic", name: "Digital Logic", weight: 5.0, difficulty: "Easy" },
+            { id: "Algorithms", name: "Algorithms", weight: 8.5, difficulty: "Hard" },
+            { id: "DBMS", name: "DBMS", weight: 7.5, difficulty: "Medium" },
+            { id: "TOC", name: "TOC (Theory of Computation)", weight: 8.0, difficulty: "Medium" },
+            { id: "Compiler Design", name: "Compiler Design", weight: 5.0, difficulty: "Medium" },
+            { id: "COA", name: "COA (Computer Organization)", weight: 8.5, difficulty: "Hard" },
+            { id: "Operating Systems", name: "Operating Systems", weight: 9.0, difficulty: "Medium" },
+            { id: "Computer Networks", name: "Computer Networks", weight: 9.5, difficulty: "Hard" },
+            { id: "Engineering Mathematics", name: "Engineering Mathematics", weight: 12.0, difficulty: "Medium" },
+            { id: "Discrete Mathematics", name: "Discrete Mathematics", weight: 6.5, difficulty: "Hard" },
+            { id: "General Aptitude", name: "General Aptitude", weight: 15.0, difficulty: "Easy" }
+        ];
+
+        const TOPIC_INTELLIGENCE = {
+            "PDS": ["Pointers & Recursion (109 PYQs)", "Binary Search Trees & Traversal", "Arrays, Stacks & Queues Math"],
+            "Digital Logic": ["Combinational Circuits (K-Maps)", "Sequential Circuits & Flip-Flops", "Number Systems & Codes"],
+            "Algorithms": ["Graph Algorithms (Dijkstra/MST 86 PYQs)", "Dynamic Programming & Greedy", "Recurrences & Asymptotic Bounds"],
+            "DBMS": ["SQL Queries & Joins (115 PYQs)", "Functional Dependency & Normalization", "B / B+ Trees Indexing (68 PYQs)"],
+            "TOC": ["Regular Languages & DFA/NFA", "Context-Free Grammars & Pushdown Automata", "Turing Machines & Decidability"],
+            "Compiler Design": ["Lexical Analysis & Parsing (176 PYQs)", "Intermediate Code Generation", "Liveness & Code Optimization"],
+            "COA": ["Cache Memory & Mapping Math (72 PYQs)", "Pipelining & Hazard Resolution", "Instruction Formats & Addressing"],
+            "Operating Systems": ["Deadlocks & Semaphores (53 PYQs)", "CPU Scheduling & Process Sync", "Virtual Memory & Paging Math"],
+            "Computer Networks": ["OSI & TCP/IP Header Protocols (111 PYQs)", "IP Addressing & Subnetting", "Flow Control & Sliding Window"],
+            "Engineering Mathematics": ["Graph Theory (115 PYQs)", "Linear Algebra & Eigenvalues Math", "Bayes Theorem & Probability"],
+            "Discrete Mathematics": ["Propositional & First-Order Logic", "Set Theory, Relations & Lattices", "Combinatorics & Generating Functions"],
+            "General Aptitude": ["Numerical Reasoning & Series", "Spatial Reasoning & Diagrams", "Verbal Ability & Grammar"]
+        };
+
+        const PAIR_MATRIX = {
+            "PDS": { "Digital Logic": 90, "Algorithms": 92, "DBMS": 88, "TOC": 75, "COA": 82 },
+            "Digital Logic": { "COA": 90, "PDS": 90, "Operating Systems": 84 },
+            "Algorithms": { "PDS": 92, "DBMS": 88, "TOC": 85, "Discrete Mathematics": 89 },
+            "DBMS": { "Algorithms": 88, "PDS": 88, "Operating Systems": 85 },
+            "TOC": { "Compiler Design": 95, "Algorithms": 85, "Discrete Mathematics": 92 }
+        };
+
+        const PYQ_RADAR_TOPICS = [
+            { topic: "Graph Theory", subject: "Engineering Mathematics", count: 115 },
+            { topic: "SQL Queries & Normalization", subject: "DBMS", count: 115 },
+            { topic: "OSI & TCP/IP Header Protocols", subject: "Computer Networks", count: 111 },
+            { topic: "Pointers, Recursion & Arrays", subject: "PDS", count: 109 },
+            { topic: "Lexical Analysis & Parsing", subject: "Compiler Design", count: 176 }
+        ];
+
+        let cseState = {
+            simCurrentDay: 0,
+            simTotalHours: 0,
+            coachingSubject: "PDS",
+            upcomingSubject: "Digital Logic",
+            activePair: { s1: "PDS", s2: "Digital Logic" },
+            lowEnergyMode: false,
+            backlogMode: false,
+            tonightCheckedTasks: {},
+            mastery: { "PDS": 40, "Digital Logic": 30, "Algorithms": 20, "DBMS": 25, "TOC": 10 },
+            spacedRevisions: [{ id: 1, concept: "B+ Tree Order Rule", status: "Due" }]
+        };
+
+        // -------------------------------------------------------------
+        // APPLICATION INITIALIZATION
+        // -------------------------------------------------------------
         document.addEventListener("DOMContentLoaded", () => {
-            if (window.gateSaaSStore) {
-                window.gateSaaSStore.notifyUI();
+            if (window.gateSaaSStore) window.gateSaaSStore.notifyUI();
+            loadCSEState();
+            initCSESelects();
+            renderCSEAll();
+            renderExplorerQuestions();
+
+            // Hash handling for direct #planner link
+            if (window.location.hash === "#planner") {
+                switchMainView("planner");
             }
         });
 
-        function handleLandingSearch(event) {
-            event.preventDefault();
+        // -------------------------------------------------------------
+        // LIVE TOPIC & QUESTION SEARCH ENGINE
+        // -------------------------------------------------------------
+        function handleSearchInput(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const popover = document.getElementById("search-results-popover");
+            const popoverContent = document.getElementById("search-popover-content");
+
+            if (!query || query.length < 2) {
+                popover.classList.remove("active");
+                return;
+            }
+
+            const matches = filterQuestionsByQuery(query);
+            renderPopoverResults(matches, query, popoverContent);
+            popover.classList.add("active");
+        }
+
+        function filterQuestionsByQuery(query) {
+            if (typeof QUESTIONS_DATABASE === "undefined") return [];
+
+            return QUESTIONS_DATABASE.filter(q => {
+                const text = (q.questionText || "").toLowerCase();
+                const subj = (q.subject || "").toLowerCase();
+                const unit = (q.unit || "").toLowerCase();
+                const topic = (q.topic || "").toLowerCase();
+                const qid = (q.id || "").toLowerCase();
+                const qnum = `q${q.questionNumber}`;
+
+                return text.includes(query) || 
+                       subj.includes(query) || 
+                       unit.includes(query) || 
+                       topic.includes(query) || 
+                       qid.includes(query) || 
+                       qnum === query ||
+                       String(q.year).includes(query);
+            });
+        }
+
+        function renderPopoverResults(matches, query, container) {
+            if (matches.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                        No direct questions found matching “<strong>${escapeHtml(query)}</strong>”.
+                        <br><a href="pyqs.html?search=${encodeURIComponent(query)}" style="color: var(--accent-blue-light); text-decoration: underline; margin-top: 6px; display: inline-block;">Search full PYQ workspace ↗</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="padding: 6px 8px 10px; font-size: 12px; font-weight: 700; color: var(--accent-blue-light); display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); margin-bottom: 8px;">
+                    <span>FOUND ${matches.length} MATCHING QUESTION(S)</span>
+                    <a href="javascript:void(0)" onclick="quickSearchTopic('${escapeHtml(query)}')" style="color: #fff; text-decoration: underline;">View in Explorer (${matches.length}) ↗</a>
+                </div>
+            `;
+
+            matches.slice(0, 4).forEach(q => {
+                html += `
+                    <div class="search-result-card" onclick="openExplorerQuestion('${q.id}')">
+                        <div class="search-result-header">
+                            <span class="search-result-title">GATE DA ${q.year} — Q${q.questionNumber} (${q.questionType})</span>
+                            <span class="badge badge-cyan" style="font-size: 10px;">${q.subject}</span>
+                        </div>
+                        <div class="search-result-meta">📍 ${q.topic} • ${q.marks} Mark(s)</div>
+                        ${q.imageData ? `<img src="${q.imageData}" class="search-img-preview" alt="Question Crop" />` : ''}
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Answer Key: <strong style="color: #fff;">${q.officialAnswer}</strong></span>
+                            <span style="font-size: 11px; color: var(--accent-blue-light); font-weight: 700;">Practice Question ➔</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (matches.length > 4) {
+                html += `
+                    <div style="text-align: center; padding: 6px;">
+                        <button class="btn-pill btn-pill-primary" style="width: 100%; font-size: 12px;" onclick="quickSearchTopic('${escapeHtml(query)}')">
+                            View all ${matches.length} matching questions in Explorer
+                        </button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function quickSearchTopic(topicKeyword) {
+            document.getElementById("hero-search-input").value = topicKeyword;
+            document.getElementById("search-results-popover").classList.remove("active");
+
+            const matches = filterQuestionsByQuery(topicKeyword.toLowerCase().trim());
+            renderExplorerQuestions(matches, topicKeyword);
+            switchMainView('explorer');
+        }
+
+        function handleLandingSearch(e) {
+            e.preventDefault();
             const val = document.getElementById("hero-search-input").value;
             if (val && val.trim()) {
-                window.location.href = `pyqs.html?search=${encodeURIComponent(val.trim())}`;
-            } else {
-                window.location.href = "pyqs.html";
+                quickSearchTopic(val.trim());
             }
         }
 
-        // Global Command-K Keyboard Shortcut Listener
+        // Close popover when clicking outside
+        document.addEventListener("click", (e) => {
+            const container = document.querySelector(".hero-search-container");
+            const popover = document.getElementById("search-results-popover");
+            if (container && popover && !container.contains(e.target)) {
+                popover.classList.remove("active");
+            }
+        });
+
+        // Global ⌘K Shortcut Listener
         document.addEventListener("keydown", (e) => {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
                 e.preventDefault();
                 const heroInput = document.getElementById("hero-search-input");
                 if (heroInput) {
                     heroInput.focus();
-                } else {
-                    window.location.href = "pyqs.html";
+                    heroInput.select();
                 }
             }
         });
+
+        // -------------------------------------------------------------
+        // LIVE EXPLORER QUESTION RENDERER
+        // -------------------------------------------------------------
+        function renderExplorerQuestions(questionsList = null, queryText = "") {
+            const container = document.getElementById("explorer-cards-grid");
+            const titleEl = document.getElementById("explorer-title");
+            const subEl = document.getElementById("explorer-subtitle");
+            const countEl = document.getElementById("explorer-match-count");
+            if (!container) return;
+
+            const list = questionsList || (typeof QUESTIONS_DATABASE !== "undefined" ? QUESTIONS_DATABASE : []);
+            if (countEl) countEl.textContent = list.length;
+
+            if (queryText) {
+                if (titleEl) titleEl.textContent = `Questions for Topic: "${queryText}"`;
+                if (subEl) subEl.textContent = `Found ${list.length} official GATE questions matching "${queryText}".`;
+            } else {
+                if (titleEl) titleEl.textContent = `All 165 GATE DA Official Questions`;
+                if (subEl) subEl.textContent = `Complete Question Bank from official papers (2024, 2025, 2026).`;
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="panel" style="text-align: center; color: var(--text-muted);">No questions found for your search criteria.</div>`;
+                return;
+            }
+
+            let html = "";
+            list.forEach(q => {
+                html += `
+                    <div class="panel" id="q-card-${q.id}">
+                        <div class="panel-header">
+                            <h2>
+                                <span class="badge badge-purple">GATE DA ${q.year}</span>
+                                <span>Question ${q.questionNumber} (${q.questionType})</span>
+                            </h2>
+                            <div>
+                                <span class="badge badge-cyan">${q.subject}</span>
+                                <span class="badge badge-green">${q.marks} Mark(s)</span>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                            <strong>Topic:</strong> ${q.topic} • <strong>Unit:</strong> ${q.unit}
+                        </div>
+
+                        ${q.imageData ? `
+                            <div style="text-align: center; margin-bottom: 16px; background: #fff; padding: 12px; border-radius: 8px;">
+                                <img src="${q.imageData}" style="max-width: 100%; height: auto; display: inline-block;" alt="Cropped Figure" />
+                            </div>
+                        ` : ''}
+
+                        <!-- Answer & Practice Section -->
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 14px; border-radius: 8px; margin-top: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <span style="font-size: 13px; font-weight: 700;">Official Answer: </span>
+                                    <span style="font-family: var(--font-mono); color: var(--accent-blue-light); font-weight: 700; font-size: 14px;">${q.officialAnswer}</span>
+                                </div>
+                                <button class="btn-pill btn-pill-secondary" onclick="toggleAIExp('${q.id}')" style="font-size: 12px;">
+                                    💡 Toggle AI Explanation
+                                </button>
+                            </div>
+                            <div id="ai-exp-${q.id}" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--card-border); font-size: 13px; color: #cbd5e1; line-height: 1.6; white-space: pre-line;">
+                                ${q.aiExplanation || 'Step-by-step explanation available in database.'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleAIExp(id) {
+            const el = document.getElementById(`ai-exp-${id}`);
+            if (el) {
+                el.style.display = el.style.display === "none" ? "block" : "none";
+            }
+        }
+
+        function openExplorerQuestion(id) {
+            switchMainView('explorer');
+            setTimeout(() => {
+                const el = document.getElementById(`q-card-${id}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        // -------------------------------------------------------------
+        // MAIN VIEW SWITCHER CONTROLLER
+        // -------------------------------------------------------------
+        function switchMainView(viewName) {
+            document.querySelectorAll(".view-section").forEach(sec => sec.classList.remove("active"));
+            document.querySelectorAll(".view-tab-btn").forEach(btn => btn.classList.remove("active"));
+
+            const secTarget = document.getElementById(`view-${viewName}`);
+            const btnTarget = document.getElementById(`tab-btn-${viewName}`);
+
+            if (secTarget) secTarget.classList.add("active");
+            if (btnTarget) btnTarget.classList.add("active");
+
+            window.location.hash = viewName;
+        }
+
+        // -------------------------------------------------------------
+        // CSE COMMAND CENTER RENDERER
+        // -------------------------------------------------------------
+        function loadCSEState() {
+            try {
+                const saved = localStorage.getItem("GATE_CSE_COMMAND_CENTER_STATE");
+                if (saved) cseState = JSON.parse(saved);
+            } catch(e) {}
+        }
+
+        function saveCSEState() {
+            try {
+                localStorage.setItem("GATE_CSE_COMMAND_CENTER_STATE", JSON.stringify(cseState));
+            } catch(e) {}
+        }
+
+        function initCSESelects() {
+            const coachSel = document.getElementById("select-coaching-subj");
+            const upSel = document.getElementById("select-upcoming-subj");
+            if (coachSel) {
+                coachSel.innerHTML = "";
+                SUBJECTS.forEach(s => {
+                    const opt = document.createElement("option");
+                    opt.value = s.id; opt.textContent = s.name;
+                    coachSel.appendChild(opt);
+                });
+                coachSel.value = cseState.coachingSubject;
+            }
+            if (upSel) {
+                upSel.innerHTML = "";
+                SUBJECTS.forEach(s => {
+                    const opt = document.createElement("option");
+                    opt.value = s.id; opt.textContent = s.name;
+                    upSel.appendChild(opt);
+                });
+                upSel.value = cseState.upcomingSubject;
+            }
+        }
+
+        function renderCSEAll() {
+            renderKPIs();
+            renderAutoPairRecommendations();
+            generateTonightPlan();
+            renderMasterySliders();
+            renderMatrix();
+            saveCSEState();
+        }
+
+        function renderKPIs() {
+            const simDay = document.getElementById("kpi-sim-day");
+            const totalHours = document.getElementById("kpi-total-hours");
+            if (simDay) simDay.textContent = `Day ${cseState.simCurrentDay}`;
+            if (totalHours) totalHours.textContent = `Total Study: ${cseState.simTotalHours.toFixed(1)} hrs`;
+        }
+
+        function renderAutoPairRecommendations() {
+            const container = document.getElementById("pair-recommendations-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            const cSubj = cseState.coachingSubject;
+            const candidates = SUBJECTS.filter(s => s.id !== cSubj);
+
+            candidates.slice(0, 2).forEach(s => {
+                const div = document.createElement("div");
+                div.className = "panel";
+                div.style.marginBottom = "0";
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 700; color: #fff;">${cSubj} + ${s.id}</span>
+                        <span class="badge badge-cyan">Recommended Pair</span>
+                    </div>
+                    <button class="btn-pill btn-pill-primary" style="margin-top: 10px; font-size: 12px;" onclick="activatePair('${cSubj}', '${s.id}')">
+                        ⚡ Activate ${cSubj} + ${s.id} Pair
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function activatePair(s1, s2) {
+            cseState.activePair = { s1, s2 };
+            renderCSEAll();
+        }
+
+        function generateTonightPlan() {
+            const container = document.getElementById("tonight-tasks-container");
+            if (!container) return;
+            const p = cseState.activePair;
+            container.innerHTML = `
+                <div class="search-result-card">
+                    <div style="font-weight: 700; color: #fff;">1. Concept Revision (${p.s1}) — 45 Mins</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Core formula & lecture notes review</div>
+                </div>
+                <div class="search-result-card">
+                    <div style="font-weight: 700; color: #fff;">2. Deep Workbook Problem Solving (${p.s1}) — 120 Mins</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Solve 25+ standard problems & GATE PYQs</div>
+                </div>
+                <div class="search-result-card">
+                    <div style="font-weight: 700; color: #fff;">3. Companion Revision (${p.s2}) — 105 Mins</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Secondary pair active retrieval</div>
+                </div>
+            `;
+        }
+
+        function renderMasterySliders() {
+            const container = document.getElementById("mastery-sliders-container");
+            if (!container) return;
+            container.innerHTML = "";
+            SUBJECTS.forEach(s => {
+                const val = cseState.mastery[s.id] || 0;
+                const div = document.createElement("div");
+                div.className = "search-result-card";
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px;">
+                        <span>${s.name}</span>
+                        <span style="color: var(--accent-blue-light);">${val}%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="${val}" style="width: 100%;" oninput="updateMastery('${s.id}', this.value)">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateMastery(id, val) {
+            cseState.mastery[id] = parseInt(val) || 0;
+            saveCSEState();
+        }
+
+        function renderMatrix() {
+            const table = document.getElementById("matrix-table-el");
+            if (!table) return;
+            const list = SUBJECTS.slice(0, 6).map(s => s.id);
+            let html = `<thead><tr><th>Subject</th>`;
+            list.forEach(s => html += `<th>${s.substring(0, 5)}</th>`);
+            html += `</tr></thead><tbody>`;
+            list.forEach(s1 => {
+                html += `<tr><th>${s1.substring(0, 5)}</th>`;
+                list.forEach(s2 => {
+                    html += `<td class="matrix-cell">${s1 === s2 ? '-' : '85'}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += `</tbody>`;
+            table.innerHTML = html;
+        }
+
+        function switchCCTab(tabId) {
+            document.querySelectorAll(".cc-tab-btn").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".cc-tab-content").forEach(c => c.classList.remove("active"));
+
+            const btn = Array.from(document.querySelectorAll(".cc-tab-btn")).find(b => b.getAttribute("onclick")?.includes(tabId));
+            if (btn) btn.classList.add("active");
+
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add("active");
+        }
+
+        function updateCoachingSubject(val) { cseState.coachingSubject = val; renderCSEAll(); }
+        function updateUpcomingSubject(val) { cseState.upcomingSubject = val; renderCSEAll(); }
+        function toggleLowEnergyMode() { cseState.lowEnergyMode = !cseState.lowEnergyMode; saveCSEState(); }
+        function toggleBacklogMode() { cseState.backlogMode = !cseState.backlogMode; saveCSEState(); }
+        function exportCSEData() { alert("Exporting plan JSON..."); }
+        function importCSEDataPrompt() { prompt("Paste JSON string:"); }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
     </script>
 </body>
 </html>
