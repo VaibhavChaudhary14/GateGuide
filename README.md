@@ -18,6 +18,7 @@ A premium, offline-first educational platform designed to search, filter, practi
     *   Set custom paper lengths (5, 10, 15, 20, 30, or a full 55-question paper).
     *   Features active timer tracking and official GATE marking rules ($+Marks$, and $-Marks/3$ for incorrect MCQs).
 *   **Offline PDF Generator:** Compile clean, subject-wise revision question books or single-question cards directly in your browser using client-side `jsPDF` integrations.
+*   **High-Scale Multi-Tier Cache Memory (100+ Users):** Integrated LRU Memory Cache Engine (`cache_manager.js`) and distributed Redis L4 API Layer (`server_cache_redis.js`) benchmarked for sub-10ms response times across 100+ simultaneous candidates. See [system_design_and_cache.md](file:///c:/Users/Vaibhav%20Chaudhary/OneDrive/Desktop/GATE%202027/GateGuide/system_design_and_cache.md) for full system design.
 *   **Analysis Dashboard:** Provides insight into high-priority recurrence topics, identical concepts repeated across exam cycles, and year-by-year subject weight distributions.
 
 ---

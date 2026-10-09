@@ -239,22 +239,24 @@ function renderContent() {
     const mainContent = document.getElementById("main-content");
     if (!mainContent) return;
     
-    let filtered = QUESTIONS_DATABASE.filter(q => {
-        if (activeSubject !== "All Subjects" && q.subject !== activeSubject) return false;
-        if (activeUnit !== "All Units" && q.unit !== activeUnit) return false;
-        if (activeTopic !== "All Topics" && q.topic !== activeTopic) return false;
-        if (activeYear !== "all" && q.year.toString() !== activeYear) return false;
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            const textMatch = q.questionText.toLowerCase().includes(query);
-            const numMatch = `q${q.questionNumber}`.includes(query) || `q.${q.questionNumber}`.includes(query) || q.questionNumber.toString() === query;
-            const topicMatch = q.topic.toLowerCase().includes(query);
-            const subjectMatch = q.subject.toLowerCase().includes(query);
-            const unitMatch = q.unit.toLowerCase().includes(query);
-            return textMatch || numMatch || topicMatch || subjectMatch || unitMatch;
-        }
-        return true;
-    });
+    let filtered = window.gateCacheManager ? 
+        window.gateCacheManager.getFilteredQuestions(QUESTIONS_DATABASE, activeSubject, activeUnit, activeTopic, activeYear, searchQuery) :
+        QUESTIONS_DATABASE.filter(q => {
+            if (activeSubject !== "All Subjects" && q.subject !== activeSubject) return false;
+            if (activeUnit !== "All Units" && q.unit !== activeUnit) return false;
+            if (activeTopic !== "All Topics" && q.topic !== activeTopic) return false;
+            if (activeYear !== "all" && q.year.toString() !== activeYear) return false;
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
+                const textMatch = q.questionText.toLowerCase().includes(query);
+                const numMatch = `q${q.questionNumber}`.includes(query) || `q.${q.questionNumber}`.includes(query) || q.questionNumber.toString() === query;
+                const topicMatch = q.topic.toLowerCase().includes(query);
+                const subjectMatch = q.subject.toLowerCase().includes(query);
+                const unitMatch = q.unit.toLowerCase().includes(query);
+                return textMatch || numMatch || topicMatch || subjectMatch || unitMatch;
+            }
+            return true;
+        });
     
     let breadcrumbHtml = `
         <div class="breadcrumbs">
